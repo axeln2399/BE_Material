@@ -1,0 +1,1985 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PayPay in Eight Weeks</title>
+<meta name="description" content="An 8-week PayPay backend (Java) interview plan for the Payments and Core Banking roles, with a question bank and week-by-week progress tracker.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PayPay Prep">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F2F5F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#101615" media="(prefers-color-scheme: dark)">
+<style>
+  html { margin: 0; }
+  body { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }
+  .progress-head { top: env(safe-area-inset-top, 0px); }
+</style>
+</head>
+<body>
+<style>
+  :root {
+    --paper:      #F2F5F4;
+    --card:       #FAFCFB;
+    --ink:        #17201F;
+    --muted:      #58676A;
+    --rule:       #C5D3D1;
+    --rule-soft:  #DCE5E3;
+    --teal:       #1D5E63;
+    --teal-dim:   #DFEDEC;
+    --gold:       #8F7326;
+    --gold-dim:   #F0E9D5;
+    --done:       #4A6B52;
+    --code-bg:    #18211F;
+    --code-ink:   #D8E3E0;
+    --code-dim:   #7F9690;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #101615;
+      --card:       #172020;
+      --ink:        #E6ECEA;
+      --muted:      #93A4A3;
+      --rule:       #32403F;
+      --rule-soft:  #243030;
+      --teal:       #7FC3C0;
+      --teal-dim:   #17302F;
+      --gold:       #C9A44C;
+      --gold-dim:   #2B2519;
+      --done:       #86AE8E;
+      --code-bg:    #0B100F;
+      --code-ink:   #D2DEDA;
+      --code-dim:   #6F8580;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper:      #101615;
+    --card:       #172020;
+    --ink:        #E6ECEA;
+    --muted:      #93A4A3;
+    --rule:       #32403F;
+    --rule-soft:  #243030;
+    --teal:       #7FC3C0;
+    --teal-dim:   #17302F;
+    --gold:       #C9A44C;
+    --gold-dim:   #2B2519;
+    --done:       #86AE8E;
+    --code-bg:    #0B100F;
+    --code-ink:   #D2DEDA;
+    --code-dim:   #6F8580;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    margin: 0;
+    padding: 0 24px 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    padding-top: 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .kanji-row { display: flex; gap: 6px; }
+
+  .kanji-cell {
+    width: 46px;
+    height: 46px;
+    border: 1px solid var(--rule);
+    display: grid;
+    place-items: center;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Songti SC", Georgia, serif;
+    font-size: 26px;
+    color: var(--teal);
+    background: var(--card);
+  }
+
+  h1 {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+    font-size: clamp(38px, 7vw, 60px);
+    line-height: 1.05;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .meta-item {
+    flex: 1 1 130px;
+    padding: 14px 18px 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label, th, .phase-wk, .chip, .btn, .tag, .lock, .gate b, .deadline b {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  .meta-label {
+    font-size: 10.5px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .meta-value {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+    font-size: 21px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---------- sections ---------- */
+
+  section { display: flex; flex-direction: column; gap: 18px; scroll-margin-top: 80px; }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+  }
+
+  h2 {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+    font-size: 27px;
+    font-weight: 400;
+    margin: 0;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .sec-jp {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 14px;
+    color: var(--teal);
+    letter-spacing: 0.08em;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  h3 { font-size: 15px; font-weight: 650; margin: 0; }
+
+  p { margin: 0; max-width: 66ch; }
+
+  a { color: var(--teal); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible {
+    outline: 2px solid var(--teal);
+    outline-offset: 3px;
+  }
+
+  strong { font-weight: 650; }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.86em;
+    background: var(--rule-soft);
+    padding: 0.05em 0.35em;
+  }
+
+  pre {
+    margin: 0;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    font: 12.5px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+    padding: 14px 16px;
+    overflow-x: auto;
+  }
+
+  pre code { background: none; padding: 0; font-size: 1em; color: inherit; }
+  pre .c { color: var(--code-dim); }
+
+  /* ---------- reality panel ---------- */
+
+  .reality {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--gold);
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .sum {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2px 16px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13.5px;
+    font-variant-numeric: tabular-nums;
+    align-items: baseline;
+  }
+
+  .sum .op, .sum .lbl { color: var(--muted); }
+  .sum .val { text-align: right; }
+  .sum .total, .sum .total-l { border-top: 1px solid var(--rule); padding-top: 6px; margin-top: 4px; }
+  .sum .total { color: var(--gold); font-weight: 600; }
+
+  /* ---------- loop pipeline ---------- */
+
+  .pipe {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    border-top: 1px solid var(--rule);
+  }
+
+  .pipe li {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px 16px 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    max-width: none;
+  }
+
+  .pipe .step { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10.5px; letter-spacing: 0.1em; color: var(--teal); }
+  .pipe b { font-weight: 600; font-size: 15px; }
+  .pipe small { color: var(--muted); font-size: 13px; line-height: 1.45; }
+
+  /* ---------- tables ---------- */
+
+  .scroller { overflow-x: auto; }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+    min-width: 520px;
+  }
+
+  th {
+    text-align: left;
+    font-size: 10.5px;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    padding: 0 14px 8px 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: bottom;
+  }
+
+  td {
+    padding: 11px 14px 11px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    vertical-align: top;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  .t-time {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .t-block { font-weight: 600; }
+  .t-note { color: var(--muted); font-size: 13.5px; }
+  td a { text-decoration: none; }
+
+  .lock {
+    display: inline-block;
+    font-size: 9.5px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: var(--teal-dim);
+    padding: 2px 6px;
+    margin-left: 6px;
+    vertical-align: 1px;
+  }
+
+  /* ---------- phases ---------- */
+
+  .phases { display: flex; flex-direction: column; }
+
+  .phase {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 22px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .phase:first-child { border-top: 1px solid var(--rule); }
+
+  .phase-mark { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+
+  .phase-cell {
+    width: 46px; height: 46px;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    display: grid; place-items: center;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "Songti SC", Georgia, serif;
+    font-size: 24px;
+    color: var(--teal);
+  }
+
+  .phase-wk {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .phase-body { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+  .phase-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; }
+  .phase-title h3 { font-size: 19px; font-weight: 600; }
+
+  .phase-dates {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .targets { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .chip {
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    padding: 3px 9px;
+    color: var(--muted);
+  }
+
+  .chip b { color: var(--ink); font-weight: 600; }
+
+  .gate {
+    background: var(--teal-dim);
+    border-left: 2px solid var(--teal);
+    padding: 10px 14px;
+    font-size: 13.5px;
+  }
+
+  .gate b, .deadline b {
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .gate b { color: var(--teal); }
+
+  .deadline {
+    background: var(--gold-dim);
+    border-left: 2px solid var(--gold);
+    padding: 10px 14px;
+    font-size: 13.5px;
+  }
+
+  .deadline b { color: var(--gold); }
+
+  /* ---------- question bank ---------- */
+
+  .bank-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+
+  .bank-stat {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    margin-right: auto;
+  }
+
+  .bank-stat b { color: var(--done); font-size: 17px; font-weight: 600; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13.5px; color: var(--muted); }
+
+  .qgroup { display: flex; flex-direction: column; }
+
+  .qgroup-label {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 22px 0 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .qgroup-label h3 { font-size: 16px; }
+
+  .qgroup-label span {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .qgroup > .scroller, .qgroup > p { margin-top: 12px; margin-bottom: 4px; }
+
+  .q {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .q input[type="checkbox"], .wk input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    margin: 4px 0 0;
+    accent-color: var(--done);
+    cursor: pointer;
+  }
+
+  .q details { min-width: 0; }
+
+  .q summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 10px;
+    font-size: 14.5px;
+  }
+
+  .q summary::-webkit-details-marker { display: none; }
+
+  .q summary::after {
+    content: "answer +";
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 10.5px;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  .q details[open] summary::after { content: "hide −"; }
+
+  .q.is-done .qt { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border: 1px solid var(--rule);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .tag.rep { color: var(--gold); border-color: var(--gold); }
+  .tag.core { color: var(--teal); border-color: var(--teal); }
+  .tag.pay { color: var(--teal); background: var(--teal-dim); border-color: transparent; }
+  .tag.bank { color: var(--gold); background: var(--gold-dim); border-color: transparent; }
+
+  .req { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; white-space: nowrap; color: var(--muted); }
+  .req.must { color: var(--ink); font-weight: 600; }
+
+  .jp { font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif; }
+
+  .ans {
+    padding: 10px 0 6px;
+    font-size: 14.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .ans ul { gap: 4px; }
+  .ans table { font-size: 13px; }
+
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px;
+  }
+
+  .flow span { border: 1px solid var(--rule); background: var(--card); padding: 3px 8px; }
+  .flow span.hot { border-color: var(--teal); color: var(--teal); }
+  .flow em { font-style: normal; color: var(--muted); }
+
+  /* ---------- tracker ---------- */
+
+  .progress-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    padding: 16px 18px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  .progress-stat {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .progress-stat b { color: var(--done); font-size: 17px; font-weight: 600; }
+
+  .bar {
+    flex: 1 1 160px;
+    height: 6px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule);
+    min-width: 120px;
+  }
+
+  .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--done);
+    transition: width 240ms ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar-fill { transition: none; }
+  }
+
+  .btn {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: transparent;
+    color: var(--teal);
+    border: 1px solid var(--teal);
+    padding: 7px 12px;
+    cursor: pointer;
+  }
+
+  .btn:hover { background: var(--teal-dim); }
+
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .track-group { display: flex; flex-direction: column; }
+
+  .track-label {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 22px 0 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .track-label h3 { font-size: 16px; }
+
+  .track-label span {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: auto;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wk {
+    display: grid;
+    grid-template-columns: 22px 52px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .wk-n {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    padding-top: 2px;
+  }
+
+  .wk label { cursor: pointer; font-size: 14.5px; }
+
+  .wk.is-done .wk-task { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 1px; }
+  .wk.is-done .wk-n { color: var(--done); }
+
+  .wk-sub { display: block; font-size: 12.5px; color: var(--muted); text-decoration: none !important; }
+
+  .wk-gate { color: var(--teal); font-weight: 600; margin-top: 3px; }
+
+  .wk.is-gate { background: var(--teal-dim); padding-left: 10px; padding-right: 10px; margin-left: -10px; margin-right: -10px; }
+  .wk.is-gate .wk-task { font-weight: 600; }
+
+  .res-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px 0 4px;
+  }
+
+  .res-link {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11.5px;
+    border: 1px solid var(--rule);
+    background: var(--card);
+    color: var(--teal);
+    padding: 5px 10px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .res-link:hover { background: var(--teal-dim); }
+  .res-link::after { content: "↗"; font-size: 10px; opacity: 0.55; }
+
+  /* ---------- toolkit ---------- */
+
+  .kit { display: flex; flex-direction: column; }
+
+  .kit-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: baseline;
+  }
+
+  .kit-item:first-child { border-top: 1px solid var(--rule); }
+
+  .kit-name { font-weight: 650; font-size: 15px; }
+  .kit-name a { text-decoration: none; }
+  .kit-name a:hover { text-decoration: underline; }
+
+  .kit-desc { grid-column: 1 / -1; color: var(--muted); font-size: 13.5px; }
+
+  .tag.free { color: var(--done); border-color: var(--done); }
+  .tag.paid { color: var(--gold); border-color: var(--gold); }
+
+  /* ---------- rules ---------- */
+
+  .rules { display: flex; flex-direction: column; }
+
+  .rule-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+
+  .rule-item:first-child { border-top: 1px solid var(--rule); }
+
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+
+  ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  li { max-width: 64ch; }
+
+  .sources li { font-size: 13.5px; color: var(--muted); }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+    color: var(--muted);
+    font-size: 13.5px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    padding: 10px 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+    z-index: 20;
+  }
+
+  .toast.show { opacity: 1; }
+
+  @media (max-width: 560px) {
+    .phase { grid-template-columns: 1fr; gap: 14px; }
+    .phase-mark { flex-direction: row; align-items: center; gap: 12px; }
+    .masthead { padding-top: 48px; }
+    .wk { grid-template-columns: 22px 44px 1fr; gap: 9px; }
+    .q summary::after { display: none; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kanji-row">
+      <div class="kanji-cell">面</div>
+      <div class="kanji-cell">接</div>
+      <div class="kanji-cell">準</div>
+      <div class="kanji-cell">備</div>
+    </div>
+    <h1>PayPay in Eight&nbsp;Weeks</h1>
+    <p class="standfirst">A prep schedule for a Java backend engineer with five years' experience, matched line by line to two PayPay openings in Tokyo: <strong>Backend Engineer (Payments)</strong> and <strong>Backend Engineer (Core Banking System)</strong>. It's built for one hour on weekdays and two to three hours at the weekend. Week 1 starts whenever you start. Tick weeks off as you finish them, and tick questions once you can answer them out loud. Progress saves on this device.</p>
+
+    <div class="meta-strip">
+      <div class="meta-item"><span class="meta-label">Weekly budget</span><span class="meta-value">10 hrs</span></div>
+      <div class="meta-item"><span class="meta-label">Duration</span><span class="meta-value">8 weeks</span></div>
+      <div class="meta-item"><span class="meta-label">Total prep</span><span class="meta-value">80 hrs</span></div>
+      <div class="meta-item"><span class="meta-label">Apply</span><span class="meta-value">Week 5</span></div>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <h2>Why eight weeks</h2>
+      <span class="sec-jp">現実</span>
+    </div>
+    <p>Five years of backend work means you already know the job. What PayPay tests is different: timed algorithm problems, crisp answers on theory you rarely say out loud, and a payments design under pressure. Here is where the hours go.</p>
+
+    <div class="reality">
+      <div class="sum">
+        <span class="op"></span><span class="lbl">Coding: ~40 problems + 3 mocks + redos</span><span class="val">34 hrs</span>
+        <span class="op">+</span><span class="lbl">Theory: Java, concurrency, DB, cache, security, tuning</span><span class="val">24 hrs</span>
+        <span class="op">+</span><span class="lbl">Payments + core banking design</span><span class="val">11 hrs</span>
+        <span class="op">+</span><span class="lbl">AI workflow, stories + mock interviews</span><span class="val">11 hrs</span>
+        <span class="op"></span><span class="lbl total-l">Needed</span><span class="val total">80 hrs = 8 × 10</span>
+      </div>
+      <p>Coding gets almost half the hours because the <strong>online coding test is a hard filter</strong>. Recent candidates had to pass every test on 4 problems, from easy to hard. Five years of production code doesn't make you fast at LeetCode. Only practice does.</p>
+      <p><strong>Apply in week 5, not week 8.</strong> The coding test link usually arrives within 1–2 weeks of applying, and the full loop takes 3–4 weeks. Applying in week 5 puts the coding test around week 7, when your coding is at its sharpest, and the design round after week 7.</p>
+    </div>
+
+    <div class="stack">
+      <h3>Two ways this length changes</h3>
+      <ul>
+        <li><strong>You already solve LeetCode mediums in under 25 minutes.</strong> Merge weeks 1 and 2 into one and apply in week 4. The plan drops to 7 weeks. Test yourself with one timed set before deciding. Most people overestimate their speed.</li>
+        <li><strong>You are running the N3 plan at the same time.</strong> 20 hours a week won't survive a bad month. For these 8 weeks, use the N3 plan's own bad-week protocol: keep the 20-minute SRS reviews, pause new chapters, and resume N3 in week 9. Otherwise, stretch this plan to 13 weeks at 6 hours.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="roles">
+    <div class="sec-head">
+      <h2>The two roles, requirement by requirement</h2>
+      <span class="sec-jp">募集要項</span>
+    </div>
+    <p>Each line of both postings is mapped to where the plan covers it. <span class="tag pay">Payments</span> marks material that exists for the Payments role, and <span class="tag bank">Bank</span> marks material for the Core Banking role. In the question bank, untagged items apply to both.</p>
+
+    <div class="scroller">
+      <table>
+        <thead><tr><th style="width:36%">Requirement</th><th>Payments</th><th>Core Banking</th><th>Covered in</th></tr></thead>
+        <tbody>
+          <tr><td>Java (4+ yrs) · "C or Java"</td><td class="req must">Required</td><td class="req must">Required</td><td class="t-note">Phase 2 · Java &amp; concurrency</td></tr>
+          <tr><td>Data structures, algorithms, OOP</td><td class="req must">Required</td><td class="req must">Required</td><td class="t-note">Phase 1 · coding test</td></tr>
+          <tr><td>Concurrency and distributed computing, in depth</td><td class="req must">Required</td><td class="req">—</td><td class="t-note">Phase 2 · distributed locks, fencing</td></tr>
+          <tr><td>NoSQL and distributed cache</td><td class="req must">Required</td><td class="req must">NoSQL schema</td><td class="t-note">Phase 3 · DynamoDB modelling, Redis</td></tr>
+          <tr><td>Database schema design (RDB)</td><td class="req">—</td><td class="req must">Required</td><td class="t-note">Phase 3 · account &amp; ledger schema</td></tr>
+          <tr><td>Web app tuning, security-conscious development</td><td class="req">—</td><td class="req must">Required</td><td class="t-note">Phase 3 · tuning, OWASP, FISC</td></tr>
+          <tr><td>AI/LLM tools in daily work</td><td class="req must">Required</td><td class="req">—</td><td class="t-note">AI-first engineering group</td></tr>
+          <tr><td>Architecture design, middleware selection</td><td class="req">Duty</td><td class="req">Duty</td><td class="t-note">Phase 4 · choosing and justifying middleware</td></tr>
+          <tr><td>Monitoring, alerts, failure analysis</td><td class="req">Duty</td><td class="req">Duty</td><td class="t-note">Phase 4 · observability &amp; postmortems</td></tr>
+          <tr><td>Modernising financial systems safely</td><td class="req">—</td><td class="req">Duty</td><td class="t-note">Phase 4 · legacy core migration</td></tr>
+          <tr><td>REST APIs, Pub/Sub, database clients</td><td class="req">Preferred</td><td class="req">Preferred</td><td class="t-note">Phase 3 · platform components</td></tr>
+          <tr><td>AWS · microservices · large-scale transactions</td><td class="req">Preferred</td><td class="req">Preferred</td><td class="t-note">Phases 3–4</td></tr>
+          <tr><td>Finance or payments domain</td><td class="req">Preferred</td><td class="req">Preferred</td><td class="t-note">Phase 4 · ledger, Zengin, core banking</td></tr>
+          <tr><td>Tools and open source contributions</td><td class="req">Duty · AI OSS preferred</td><td class="req">—</td><td class="t-note">Behavioral · tools you built</td></tr>
+          <tr><td>Language</td><td class="req must">English <em>or</em> Japanese, business level</td><td class="req must">Japanese N1/N2</td><td class="t-note">Behavioral · <span class="jp">自己紹介</span> · the N3 plan</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="deadline"><b>Read before you apply</b>The Core Banking role requires <strong>native or JLPT N1/N2 Japanese, and every interview is in Japanese</strong>. While you're still on the N3 plan, apply to <strong>Payments in week 5</strong>. Keep studying the Core Banking material anyway: about 80% of it overlaps, and banking knowledge counts as "preferred" for Payments too. Apply to Core Banking once your Japanese is at N2. Both postings also restrict parallel applications within the PayPay group, so ask the recruiter before applying to both roles at the same time.</div>
+
+    <div class="stack">
+      <h3>What PayPay actually runs (from the Payments posting)</h3>
+      <p class="t-note">Java, Kotlin, Scala · Spring Boot, JUnit, Resilience4j, Feign · MySQL, Aurora, DynamoDB, TiDB · Kafka, Redis · ELK/Kibana · Docker, Kubernetes, ArgoCD, AWS, GCP · Gradle, Maven, Flyway, Jenkins, Snyk · BigQuery, Spark. Every one of these can turn into a follow-up question, so each has a place in the bank below.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>The loop you are training for</h2>
+      <span class="sec-jp">選考</span>
+    </div>
+    <p>Combined from candidate reports, 2022–2026. The number of rounds changes by team and year: some people had four separate technical rounds, others two long ones. The <em>topics</em> are consistent, and those are what the phases below cover. For the Payments role, expect questions on how you use AI tools. For Core Banking, the same stages happen in Japanese, and you're seconded to PayPay Bank after joining.</p>
+
+    <ol class="pipe">
+      <li><span class="step">STAGE 1</span><b>CV review</b><small>1–2 weeks. Often starts with a LinkedIn recruiter message</small></li>
+      <li><span class="step">STAGE 2</span><b>Online coding test</b><small>CodeSignal or HackerRank, 60–90 min, 2–5 problems from easy to hard</small></li>
+      <li><span class="step">STAGE 3</span><b>Phone screen</b><small>30–45 min. Checks your CV claims and English</small></li>
+      <li><span class="step">STAGE 4</span><b>Technical loop</b><small>Java + concurrency with live coding · DSA + Big-O · backend knowledge, no coding</small></li>
+      <li><span class="step">STAGE 5</span><b>System design</b><small>"Design PayPay with bank integration" · "multiple pay clicks." Often with a senior manager</small></li>
+      <li><span class="step">STAGE 6</span><b>Culture fit + offer</b><small>HR and hiring manager. The whole process takes about 3–4 weeks</small></li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>The weekly engine</h2>
+      <span class="sec-jp">毎週</span>
+    </div>
+    <p>The phases change what you study. This never changes. It has to survive tired evenings after work, so it's built to be boring and automatic.</p>
+
+    <div class="stack">
+      <h3>Weekday: 60 minutes, same slot every day</h3>
+      <div class="scroller">
+        <table>
+          <thead><tr><th style="width:78px">Minutes</th><th style="width:34%">Block</th><th>What you actually do</th></tr></thead>
+          <tbody>
+            <tr><td class="t-time">0–10</td><td class="t-block">Recall<span class="lock">Never skip</span></td><td class="t-note">Hide all answers in the question bank. Pick three unticked questions, answer each out loud, then open the answer and check yourself.</td></tr>
+            <tr><td class="t-time">10–45</td><td class="t-block">One timed problem</td><td class="t-note">25-minute timer. If you're not done, stop and read the solution, then write it yourself without looking. Note the pattern in one line.</td></tr>
+            <tr><td class="t-time">45–60</td><td class="t-block">Theory</td><td class="t-note">One question-bank topic from this week's phase. Read it, then explain it out loud in English as if the interviewer just asked.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="stack">
+      <h3>Saturday: 150 minutes</h3>
+      <div class="scroller">
+        <table>
+          <thead><tr><th style="width:78px">Minutes</th><th style="width:34%">Block</th><th>What you actually do</th></tr></thead>
+          <tbody>
+            <tr><td class="t-time">0–10</td><td class="t-block">Recall</td><td class="t-note">Same rule.</td></tr>
+            <tr><td class="t-time">10–90</td><td class="t-block">Timed set</td><td class="t-note">3–4 problems in 70 minutes, no pausing, no IDE autocomplete, just like CodeSignal. Read input from stdin the way the real test does.</td></tr>
+            <tr><td class="t-time">90–150</td><td class="t-block">Deep theory</td><td class="t-note">The phase's big topic: a DDIA chapter, the concurrency code, or a design write-up. This is your only long reading block, so protect it.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="stack">
+      <h3>Sunday: 150 minutes</h3>
+      <div class="scroller">
+        <table>
+          <thead><tr><th style="width:78px">Minutes</th><th style="width:34%">Block</th><th>What you actually do</th></tr></thead>
+          <tbody>
+            <tr><td class="t-time">0–10</td><td class="t-block">Recall</td><td class="t-note">Same rule.</td></tr>
+            <tr><td class="t-time">10–70</td><td class="t-block">Redo cold</td><td class="t-note">Re-solve every problem you failed this week from a blank file. A problem you only read the solution to doesn't count as solved.</td></tr>
+            <tr><td class="t-time">70–125</td><td class="t-block">Speak it</td><td class="t-note">Record yourself answering this week's topics, or do the week's design, out loud. Listen back once. Find where you rambled or hand-waved.</td></tr>
+            <tr><td class="t-time">125–140</td><td class="t-block">One story</td><td class="t-note">Write one STAR story (situation, task, action, result) with numbers. By week 8 you'll have eight, enough to cover every behavioral question.</td></tr>
+            <tr><td class="t-time">140–150</td><td class="t-block">Log &amp; tick</td><td class="t-note">Record your real hours, tick the week below, and choose next week's problems.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Five phases</h2>
+      <span class="sec-jp">五段階</span>
+    </div>
+    <p>Each phase ends in a gate: a concrete thing you either can or can't do. If you fail a gate, repeat the phase rather than moving on. Walking into the loop strong on design but slow at coding is how most 5-year engineers fail the coding test.</p>
+
+    <div class="phases">
+
+      <article class="phase">
+        <div class="phase-mark"><div class="phase-cell">解</div><div class="phase-wk">WK 1–2</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>Coding patterns</h3><span class="phase-dates">2 weeks · 20 hrs</span></div>
+          <p>Speed on the patterns the coding test uses most: hash maps, stacks, two pointers, sliding windows, binary search. Easy and medium only. The goal is recognising the pattern within two minutes, not clever tricks.</p>
+          <div class="targets"><span class="chip">Problems <b>17</b></span><span class="chip">Timed sets <b>1</b></span><span class="chip">Limit <b>25 min</b></span></div>
+          <p class="t-note"><strong>Materials:</strong> NeetCode 150 (Arrays &amp; Hashing, Stack, Two Pointers, Sliding Window, Binary Search), LeetCode, the reported-problem table in the question bank.</p>
+          <div class="gate"><b>Gate 1 · end of week 2</b>A 70-minute timed set of 4 problems (2 easy, 2 medium) with every test passing on at least 3 of them.</div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-mark"><div class="phase-cell">並</div><div class="phase-wk">WK 3–4</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>Java, concurrency &amp; distributed computing</h3><span class="phase-dates">2 weeks · 20 hrs</span></div>
+          <p>The first technical round opens with a team lead asking about garbage collection, data races and Java internals, then gives you a coding problem. You've used these things for years; now you need to explain <em>why</em> they work. The Payments posting requires a "deep understanding of concurrency and distributed computing", so go past a single JVM: distributed locks, leases, and fencing tokens. Daily coding moves to heaps and trees.</p>
+          <div class="targets"><span class="chip">Questions <b>Java ×11</b></span><span class="chip">Problems <b>10</b></span><span class="chip">Code from memory <b>1</b></span></div>
+          <p class="t-note"><strong>Materials:</strong> Java Concurrency in Practice (ch. 1–5, 8, 10), Baeldung for GC and ConcurrentHashMap, Spring docs on transaction management, DDIA ch. 8 (clocks, leases, fencing), Kotlin's "Kotlin for Java developers" docs.</p>
+          <div class="gate"><b>Gate 2 · end of week 4</b>Record 2-minute answers on GC eligibility, race condition vs data race, deadlock vs livelock, and why a Redis lock needs a fencing token, all with no notes. Then write the bounded blocking queue from memory in 15 minutes.</div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-mark"><div class="phase-cell">基</div><div class="phase-wk">WK 5–6</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>Backend fundamentals</h3><span class="phase-dates">2 weeks · 20 hrs</span></div>
+          <p>The round with no coding. One candidate said it "asks everything a software engineer should know": networking, Linux, databases, containers, distributed systems. Go deepest on transactions and consistency, because that's where payments live. Both postings add schema design for relational and NoSQL databases. Payments adds distributed cache. Core Banking adds tuning and security-conscious development. Daily coding moves to graphs and DP, the usual "hard" problem on the coding test.</p>
+          <div class="targets"><span class="chip">Questions <b>Backend ×24</b></span><span class="chip">Problems <b>10</b></span><span class="chip">DDIA <b>ch. 2, 5, 7, 9</b></span></div>
+          <p class="t-note"><strong>Materials:</strong> Designing Data-Intensive Applications, High Performance Browser Networking (free online, ch. 2–4), Brendan Gregg's Linux performance tools page, OWASP Top 10, AWS DynamoDB best-practices guide.</p>
+          <div class="deadline"><b>Hard deadline · week 5</b>Apply to the Payments role this week: through the posting, a recruiter, or a referral. Update your CV first, and add one line on how you use AI tools in development, with a number. Remove any technology you can't defend for ten minutes of follow-up questions.</div>
+          <div class="gate"><b>Gate 3 · end of week 6</b>A friend picks 20 random question-bank prompts from the Java and Backend sections. You answer 15 or more clearly without notes. Plus a second 4-problem timed set, including one hard problem, and a whiteboard schema for accounts, a ledger and idempotency keys in both MySQL and DynamoDB.</div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-mark"><div class="phase-cell">設</div><div class="phase-wk">WK 7</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>Payments &amp; core banking design</h3><span class="phase-dates">1 week · 11 hrs</span></div>
+          <p>Reported prompts: design PayPay itself, including the connection to banks, and handle a user tapping Pay several times. Interviewers care less about boxes and arrows than about correctness when things fail: no double charges, no lost money, and a ledger you can reconcile. Both postings also list architecture design, middleware selection, monitoring and failure analysis as daily work, so every design ends with <em>why this middleware</em> and <em>how you'd know it's broken</em>. Core Banking adds modernising a legacy system without losing reliability.</p>
+          <div class="targets"><span class="chip">Timed designs <b>3</b></span><span class="chip">Each <b>45 min</b></span><span class="chip">Postmortem <b>1</b></span></div>
+          <p class="t-note"><strong>Materials:</strong> the design and production questions in the bank, Stripe's idempotency article, the Google SRE book (ch. 6 on monitoring, ch. 15 on postmortems), Martin Fowler's Strangler Fig article.</p>
+          <div class="gate"><b>Gate 4 · end of week 7</b>Record a 45-minute design of a PayPay wallet with QR pay and bank top-up. Listening back, you covered idempotency, the payment state machine, the double-entry ledger, bank timeouts with reconciliation, a justified middleware choice, and the three alerts you'd page on, without having to remind yourself.</div>
+        </div>
+      </article>
+
+      <article class="phase">
+        <div class="phase-mark"><div class="phase-cell">面</div><div class="phase-wk">WK 8</div></div>
+        <div class="phase-body">
+          <div class="phase-title"><h3>Mock loop</h3><span class="phase-dates">1 week · 10 hrs</span></div>
+          <p>No new theory. Run one mock of each round type with a peer, repair what they expose, and finish your stories. Match each story to PayPay's 5 values. The Payments posting says AI is "not optional", so one mock includes a 5-minute walkthrough of a real task you did with an AI tool: the prompt, what it got wrong, and how you verified the result. If your real loop is already scheduled, this week becomes the week before it.</p>
+          <div class="targets"><span class="chip">Mocks <b>4 rounds</b></span><span class="chip">Stories <b>8</b></span><span class="chip">AI demo <b>1</b></span></div>
+          <p class="t-note"><strong>Materials:</strong> Exponent peer mocks or a friend, your error log, the AI-first and Behavioral sections of the bank.</p>
+          <div class="gate"><b>Ready · week 8</b>Every question-bank box is ticked, all your stories have numbers, you can explain the "multiple pay clicks" design in 5 minutes, and you can show a concrete AI-assisted change you shipped.</div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section id="bank">
+    <div class="sec-head">
+      <h2>Question bank</h2>
+      <span class="sec-jp">面接問題</span>
+    </div>
+    <p>Every question you might be asked, with a model answer. Tick a question only when you can answer it <strong>out loud, in English, in under two minutes, without opening the answer</strong>. Hide all answers first and quiz yourself.</p>
+    <div class="legend"><span><span class="tag rep">reported</span> came up in a real PayPay interview</span><span><span class="tag core">core</span> a basic every interviewer expects</span><span><span class="tag pay">Payments</span> <span class="tag bank">Bank</span> comes from that job posting</span></div>
+
+    <div class="progress-head">
+      <span class="bank-stat"><b id="qpct">0%</b> &nbsp;<span id="qcount">0 / 0 ready</span></span>
+      <div class="btn-row">
+        <button class="btn" id="hideAll" type="button">Hide answers</button>
+        <button class="btn" id="showAll" type="button">Show answers</button>
+      </div>
+    </div>
+
+    <!-- Coding test -->
+    <div class="qgroup" data-group="Coding test">
+      <div class="qgroup-label"><h3>解 Coding test</h3><span class="qg-count"></span></div>
+      <p class="t-note">Problems reported from PayPay coding tests and live coding rounds:</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Reported problem</th><th>LC #</th><th>Pattern</th></tr></thead>
+          <tbody>
+            <tr><td><a href="https://leetcode.com/problems/number-of-adjacent-elements-with-the-same-color/" target="_blank" rel="noopener noreferrer">Number of Adjacent Elements With the Same Color</a></td><td class="t-time">2672</td><td class="t-note">Array, incremental count</td></tr>
+            <tr><td><a href="https://leetcode.com/problems/add-edges-to-make-degrees-of-all-nodes-even/" target="_blank" rel="noopener noreferrer">Add Edges to Make Degrees of All Nodes Even</a></td><td class="t-time">2508</td><td class="t-note">Graph degrees, case analysis (hard)</td></tr>
+            <tr><td>String manipulation with a stack</td><td class="t-time">20 · 1047 · 394</td><td class="t-note">Stack</td></tr>
+            <tr><td><a href="https://leetcode.com/problems/min-cost-to-connect-all-points/" target="_blank" rel="noopener noreferrer">Min Cost to Connect All Points</a></td><td class="t-time">1584</td><td class="t-note">MST: Prim, or Kruskal + union-find</td></tr>
+            <tr><td>Top K collections by file size</td><td class="t-time">347 · 692</td><td class="t-note">HashMap + heap</td></tr>
+            <tr><td><a href="https://leetcode.com/problems/longest-palindromic-substring/" target="_blank" rel="noopener noreferrer">Longest Palindromic Substring</a></td><td class="t-time">5</td><td class="t-note">Expand around center</td></tr>
+            <tr><td><a href="https://leetcode.com/problems/valid-palindrome/" target="_blank" rel="noopener noreferrer">Valid Palindrome</a></td><td class="t-time">125</td><td class="t-note">Two pointers</td></tr>
+            <tr><td>Check if a binary tree is a Sum Tree</td><td class="t-time">GfG</td><td class="t-note">Post-order DFS</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="q"><input type="checkbox" id="q-oa-hash"><details><summary><span class="qt">Hash map, counting &amp; prefix sums</span><span class="tag core">core</span></summary><div class="ans"><p>Practice: 1 Two Sum, 560 Subarray Sum Equals K, 49 Group Anagrams, 128 Longest Consecutive Sequence, 2672.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-oa-stack"><details><summary><span class="qt">Stack &amp; monotonic stack</span><span class="tag rep">reported</span></summary><div class="ans"><p>Practice: 20, 1047, 394 Decode String, 739 Daily Temperatures, 150 Evaluate RPN. Use <code>ArrayDeque</code>, not <code>Stack</code>, which is synchronized and a legacy class.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-oa-heap"><details><summary><span class="qt">Heap / top-K</span><span class="tag rep">reported</span></summary><div class="ans"><p>For the K largest items, keep a <strong>min-heap of size K</strong>. That's O(n log k). Practice: 347, 692, 215, 23, 973.</p>
+<pre><code>PriorityQueue&lt;Map.Entry&lt;String, Long&gt;&gt; pq =
+    new PriorityQueue&lt;&gt;(Map.Entry.comparingByValue());
+for (var e : sizeByCollection.entrySet()) {
+    pq.offer(e);
+    if (pq.size() &gt; k) pq.poll();   <span class="c">// drop the smallest</span>
+}</code></pre></div></details></div>
+      <div class="q"><input type="checkbox" id="q-oa-graph"><details><summary><span class="qt">Graphs: BFS/DFS, degrees, union-find, MST</span><span class="tag rep">reported</span></summary><div class="ans"><p>Practice: 200 Number of Islands, 207 Course Schedule (topological sort), 684 Redundant Connection (union-find), 1584 (Prim runs in O(n²) on a dense graph), 2508. Write union-find with path compression and union by rank from memory.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-oa-window"><details><summary><span class="qt">Two pointers, sliding window, strings</span><span class="tag rep">reported</span></summary><div class="ans"><p>Practice: 3 Longest Substring Without Repeating Characters, 76 Minimum Window Substring, 424, 15 3Sum, 5, 125.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-oa-bs"><details><summary><span class="qt">Binary search, including binary search on the answer</span><span class="tag rep">reported</span></summary><div class="ans"><p>Practice: 33, 34, 153, 875 Koko Eating Bananas, 1011 Capacity to Ship Packages. Compute the midpoint as <code>lo + (hi - lo) / 2</code>.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-oa-tree"><details><summary><span class="qt">Trees: DFS returning two values, BST properties</span><span class="tag rep">reported</span></summary><div class="ans"><p>Practice: Sum Tree, 98 Validate BST, 236 Lowest Common Ancestor, 124 Max Path Sum, 102 Level Order.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-oa-dp"><details><summary><span class="qt">1-D and 2-D dynamic programming basics</span><span class="tag core">core</span></summary><div class="ans"><p>Practice: 70, 198 House Robber, 322 Coin Change, 300 LIS, 1143 LCS. The hard problem on the coding test is usually a graph or DP problem.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-oa-io"><details><summary><span class="qt">Fast stdin parsing in Java</span><span class="tag rep">reported</span></summary><div class="ans"><p>One candidate had to parse raw input like <code>"19.24,20.00"</code>. Don't spend test minutes on input handling:</p>
+<pre><code>BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+double[] vals = Arrays.stream(br.readLine().trim().split(","))
+                      .mapToDouble(Double::parseDouble).toArray();
+<span class="c">// real money code: never double → long minor units or BigDecimal</span></code></pre>
+      <p>Before submitting, check: <code>int</code> overflow (use <code>long</code>), empty input, a single element, duplicates.</p></div></details></div>
+    </div>
+
+    <!-- Java -->
+    <div class="qgroup" data-group="Java & concurrency">
+      <div class="qgroup-label"><h3>並 Java &amp; concurrency</h3><span class="qg-count"></span></div>
+
+      <div class="q"><input type="checkbox" id="q-j-gc"><details><summary><span class="qt">When is an object eligible for GC? How does the GC work?</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li>An object is eligible once it's <strong>unreachable from the GC roots</strong>: thread stacks, static fields, JNI references. Reference cycles alone don't keep objects alive.</li>
+        <li>Most objects die young, so the heap is split into generations. The young generation (Eden plus survivor spaces) is collected by copying live objects out. The old generation uses mark and compact.</li>
+        <li><strong>G1</strong> has been the default since JDK 9: region-based, with a pause-time target. <strong>ZGC</strong> keeps pauses under a millisecond and has been generational since JDK 21. Parallel GC suits batch jobs that need raw throughput.</li>
+        <li>A Java "memory leak" means objects stay reachable: static caches that never evict, <code>ThreadLocal</code> in pooled threads, listeners never unregistered, unbounded queues.</li>
+        <li>Have a production story ready: how you found a leak or long pauses using GC logs, a heap dump (<code>jcmd GC.heap_dump</code>) analysed in Eclipse MAT, or JFR.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-mem"><details><summary><span class="qt">JVM memory areas; the JVM inside a container</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>Heap (objects), a stack per thread (frames, local variables), Metaspace (class metadata, in native memory), code cache, direct buffers.</li>
+        <li>A Kubernetes memory limit covers <em>all</em> of these, not only the heap. Size the heap with <code>-XX:MaxRAMPercentage=75</code> instead of a fixed <code>-Xmx</code>, and leave headroom. Otherwise the OOM killer ends the pod with exit code 137.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-race"><details><summary><span class="qt">Race condition vs data race. Deadlock vs livelock vs starvation.</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li><strong>Data race:</strong> two threads access the same memory at the same time, at least one writes, and nothing synchronizes them. <strong>Race condition:</strong> the result depends on timing, like check-then-act. You can have a race condition without a data race: two individually synchronized calls, <code>if (!map.containsKey(k)) map.put(k, v)</code>, still race.</li>
+        <li><strong>Deadlock:</strong> threads wait on each other forever. It requires all four Coffman conditions: mutual exclusion, hold and wait, no preemption, circular wait. Fix it with a global lock order, or <code>tryLock</code> with a timeout.</li>
+        <li><strong>Livelock:</strong> threads keep reacting to each other and stay busy, but nothing progresses. <strong>Starvation:</strong> a thread never gets the resource, for example because of unfair locks.</li>
+        <li>Payments example: transfers A→B and B→A running at once can deadlock. Always lock the two accounts in ID order.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-sync"><details><summary><span class="qt">synchronized vs ReentrantLock vs volatile vs Atomic*</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li><code>volatile</code> makes every thread see the latest value, but it doesn't make operations <strong>atomic</strong>: <code>count++</code> is still broken.</li>
+        <li><code>AtomicLong</code> uses lock-free compare-and-set. <code>LongAdder</code> scales better for heavily contended counters.</li>
+        <li><code>ReentrantLock</code> adds <code>tryLock</code>, timeouts, interruptible waiting, fairness and multiple <code>Condition</code>s. Always unlock in <code>finally</code>.</li>
+        <li>A double-checked-locking singleton needs <code>volatile</code>, or another thread can see a half-constructed object.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-map"><details><summary><span class="qt">HashMap internals, and how ConcurrentHashMap differs</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>An array of buckets; the index is <code>(n-1) &amp; (h ^ h&gt;&gt;&gt;16)</code>. The table doubles when it's more than 75% full. A bucket becomes a red-black tree once it holds 8 entries and the table has at least 64 buckets.</li>
+        <li>If a key's <code>hashCode</code> changes after insertion, you can't find it again. Always override <code>equals</code> and <code>hashCode</code> together.</li>
+        <li><strong>ConcurrentHashMap</strong> (Java 8+): compare-and-set to fill an empty bucket, otherwise <code>synchronized</code> on the bucket's first node. Reads take no lock. Null keys and values aren't allowed. Use <code>computeIfAbsent</code> and <code>merge</code> for atomic check-and-update.</li>
+        <li>A plain HashMap with concurrent writers loses updates. Before Java 8, a concurrent resize could even create an infinite loop.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-exec"><details><summary><span class="qt">Thread pools, sizing, CompletableFuture, virtual threads</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li>How <code>ThreadPoolExecutor</code> handles a task: start core threads, then fill the queue, then grow to the max pool size, then reject. <code>Executors.newFixedThreadPool</code> uses an <strong>unbounded</strong> queue, which can run out of memory under load. Build pools with a bounded queue.</li>
+        <li>Sizing: CPU-bound work needs about one thread per core. IO-bound work needs cores × (1 + wait time / compute time).</li>
+        <li><code>CompletableFuture</code>: pass your own executor (the default is the shared common pool) and add <code>orTimeout</code> plus <code>exceptionally</code>.</li>
+        <li><strong>Virtual threads</strong> (JDK 21) make blocking IO cheap. Don't pool them. Blocking inside <code>synchronized</code> pins the underlying carrier thread; JDK 24 fixed that (JEP 491).</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-queue"><details><summary><span class="qt">Live coding: write a thread-safe bounded blocking queue</span><span class="tag core">core</span></summary><div class="ans">
+<pre><code>class BoundedQueue&lt;T&gt; {
+    private final Deque&lt;T&gt; q = new ArrayDeque&lt;&gt;();
+    private final int cap;
+    private final ReentrantLock lock = new ReentrantLock();
+    private final Condition notFull = lock.newCondition();
+    private final Condition notEmpty = lock.newCondition();
+
+    BoundedQueue(int cap) { this.cap = cap; }
+
+    void put(T t) throws InterruptedException {
+        lock.lock();
+        try {
+            while (q.size() == cap) notFull.await();   <span class="c">// while, not if: spurious wakeups</span>
+            q.addLast(t);
+            notEmpty.signal();
+        } finally { lock.unlock(); }
+    }
+
+    T take() throws InterruptedException {
+        lock.lock();
+        try {
+            while (q.isEmpty()) notEmpty.await();
+            T t = q.removeFirst();
+            notFull.signal();
+            return t;
+        } finally { lock.unlock(); }
+    }
+}</code></pre></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-spring"><details><summary><span class="qt">Spring IoC / dependency injection; @Transactional pitfalls</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li>IoC means the container creates your beans and supplies their dependencies. Prefer constructor injection: fields can be final, it's easy to test, and circular dependencies fail at startup. Beans are singletons by default, so they must be stateless or thread-safe.</li>
+        <li><code>@Transactional</code> works through a <strong>proxy</strong>. Calling the method from inside the same class skips the transaction. By default it rolls back only on unchecked exceptions, not checked ones, unless you set <code>rollbackFor</code>.</li>
+        <li>Propagation: <code>REQUIRED</code> (the default) joins the current transaction. <code>REQUIRES_NEW</code> starts a separate one, useful for an audit log that must survive the outer rollback.</li>
+        <li>Never call a bank or partner API inside a database transaction. It holds connections and row locks for the whole network call.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-modern"><details><summary><span class="qt">Modern Java: records, sealed types, pattern matching, stream pitfalls</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>Records work well as immutable DTOs. Sealed interfaces plus pattern-matching <code>switch</code> (JDK 21) force you to handle every case, e.g. <code>PaymentResult = Success | Declined | Pending</code>.</li>
+        <li>String is immutable: safe to share between threads, its hash is cached, and it can be interned in the string pool.</li>
+        <li><code>parallelStream</code> runs on the shared common pool, so keep it off request paths.</li>
+        <li>PayPay also uses Kotlin and Scala. Know Kotlin's null safety and data classes at a basic level.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-dlock"><details><summary><span class="qt">Distributed locks, leases and fencing tokens</span><span class="tag core">core</span><span class="tag pay">Payments</span></summary><div class="ans"><ul>
+        <li>A <code>synchronized</code> block protects one JVM. With 30 pods, you need the database, Redis or a coordination service (ZooKeeper, etcd) to decide who holds the lock.</li>
+        <li>Redis lock: <code>SET lock:payout:42 &lt;uuid&gt; NX PX 30000</code>. Release it with a Lua script that deletes the key only if the value is still <em>your</em> UUID, otherwise you could delete someone else's lock.</li>
+        <li>Every distributed lock is really a <strong>lease</strong>. A long GC pause or network stall can outlast the TTL, and then two holders both believe they own the lock. Fix: a <strong>fencing token</strong>, a number that goes up with every grant. The resource rejects writes carrying an older token (<code>UPDATE … WHERE last_token &lt; :token</code>).</li>
+        <li>For money, prefer not to need a lock at all: a unique constraint, a conditional <code>UPDATE</code>, or partitioning so a single consumer owns each account. Use a lock to avoid wasted work, not as the only thing keeping data correct.</li>
+        <li>Related vocabulary they may test: clocks can't order events across machines (use logical clocks or database sequences), leader election, split brain, quorum.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-j-jvmlang"><details><summary><span class="qt">Kotlin and Scala for a Java engineer; Java vs C memory</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li><strong>Kotlin</strong> (<span class="tag pay">Payments</span> stack): nullable types (<code>String?</code>) checked at compile time, <code>data class</code>, extension functions, and coroutines, which are lightweight like virtual threads but suspend explicitly with <code>suspend</code>. It interoperates fully with Spring and Java libraries.</li>
+        <li><strong>Scala:</strong> immutable collections by default, <code>case class</code>, <code>Option</code> instead of null, <code>Future</code>. You only need to read it, not write it, on day one. The posting asks for the "ability to learn additional coding languages".</li>
+        <li><strong>C</strong> (<span class="tag bank">Bank</span> accepts "C or Java"): manual <code>malloc</code>/<code>free</code>, pointers, no bounds checks. Buffer overflows and use-after-free are the bugs Java's GC and bounds checks rule out. Legacy bank systems often run C or COBOL, which is why this matters when modernising them.</li></ul></div></details></div>
+    </div>
+
+    <!-- Backend -->
+    <div class="qgroup" data-group="Backend fundamentals">
+      <div class="qgroup-label"><h3>基 Networking, Linux &amp; containers</h3><span class="qg-count"></span></div>
+
+      <div class="q"><input type="checkbox" id="q-b-url"><details><summary><span class="qt">What happens when you open a URL?</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li>Browser cache, then OS cache, then the <strong>DNS</strong> resolver works recursively (root → TLD → authoritative server) and may return a CDN or load balancer address.</li>
+        <li><strong>TCP</strong> three-way handshake, then a <strong>TLS 1.3</strong> handshake in one round trip (key exchange, certificate check). HTTP/3 runs over QUIC on UDP and merges these steps.</li>
+        <li>The HTTP request goes to a load balancer or API gateway (TLS termination, auth, rate limiting), then the service, then the database or cache, and back. Keep-alive reuses the connection.</li>
+        <li>The browser parses HTML, fetches assets and renders. Be ready to go deeper into whichever layer they pick.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-http"><details><summary><span class="qt">TCP vs UDP; HTTP/1.1 vs 2 vs 3; which HTTP methods are idempotent</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>TCP: ordered, reliable, with flow and congestion control. UDP: individual packets with no guarantees, used by DNS, video and QUIC.</li>
+        <li>HTTP/2 sends many requests over one TCP connection, but one lost packet still stalls all of them. HTTP/3 over QUIC fixes that.</li>
+        <li>Idempotent methods: GET, PUT, DELETE, HEAD, OPTIONS. <strong>POST is not idempotent</strong>, which is why payment APIs need an idempotency key.</li>
+        <li>Know when to return 409 (conflict), 422 (valid format, invalid content), 429 (too many requests), 503 and 504.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-cpu"><details><summary><span class="qt">A Java service is at 100% CPU in production. How do you debug it?</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li>Check metrics first: did it start with a deploy? Look at traffic, GC time and database latency.</li>
+        <li>Run <code>top -H -p &lt;pid&gt;</code> to find the hottest thread, convert its thread ID to hex, and find the matching <code>nid</code> in a <code>jstack</code> thread dump. Or profile with async-profiler or JFR.</li>
+        <li>Also know: process vs thread, load average (it counts threads waiting on IO), file descriptor limits ("too many open files"), <code>ss -s</code> for connection counts, <code>vmstat</code>, <code>iostat</code>.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-container"><details><summary><span class="qt">What is a container, really? Container vs pod?</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li>A normal Linux process, isolated with <strong>namespaces</strong> (pid, network, mount and others) and resource-limited with <strong>cgroups</strong>, running on a layered image filesystem. Unlike a VM, it shares the host's kernel.</li>
+        <li>A pod is one or more containers sharing a network namespace and volumes. Know liveness vs readiness probes, rolling deploys and autoscaling. PayPay deploys with ArgoCD, where git is the source of truth for what runs.</li></ul></div></details></div>
+
+      <div class="qgroup-label"><h3>基 Databases</h3><span></span></div>
+
+      <div class="q"><input type="checkbox" id="q-b-acid"><details><summary><span class="qt">Explain ACID in detail, using a payment</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li><strong>Atomicity:</strong> debiting the payer and crediting the merchant both happen or neither does (the undo log makes this possible).</li>
+        <li><strong>Consistency:</strong> rules hold before and after every transaction, e.g. <code>balance &gt;= 0</code> and ledger debits equal credits.</li>
+        <li><strong>Isolation:</strong> concurrent transactions don't see each other's half-finished work, up to the configured isolation level.</li>
+        <li><strong>Durability:</strong> once committed, data survives a crash (redo log or write-ahead log, fsync, replication).</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-iso"><details><summary><span class="qt">Isolation levels and the anomalies each one prevents</span><span class="tag core">core</span></summary><div class="ans">
+        <div class="scroller"><table><thead><tr><th>Level</th><th>Dirty read</th><th>Non-repeatable read</th><th>Phantom</th></tr></thead><tbody>
+          <tr><td>READ UNCOMMITTED</td><td>possible</td><td>possible</td><td>possible</td></tr>
+          <tr><td>READ COMMITTED</td><td>prevented</td><td>possible</td><td>possible</td></tr>
+          <tr><td>REPEATABLE READ<br><span class="t-note">MySQL InnoDB default</span></td><td>prevented</td><td>prevented</td><td>possible in the SQL standard; InnoDB mostly prevents it with snapshots and next-key locks</td></tr>
+          <tr><td>SERIALIZABLE</td><td>prevented</td><td>prevented</td><td>prevented</td></tr>
+        </tbody></table></div>
+        <p>The anomaly that loses money is the <strong>lost update</strong>: read the balance, compute in code, write it back. No isolation level fixes that on its own. Use an atomic <code>UPDATE … SET balance = balance - ?</code>, <code>SELECT … FOR UPDATE</code>, or a version column.</p></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-commit"><details><summary><span class="qt">Autocommit, COMMIT vs ROLLBACK, savepoints</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li>With autocommit on (the default in MySQL and JDBC), every statement is its own transaction. <code>START TRANSACTION</code> or <code>setAutoCommit(false)</code> groups statements together.</li>
+        <li>COMMIT makes the changes permanent and releases locks. ROLLBACK undoes them. <code>SAVEPOINT</code> plus <code>ROLLBACK TO</code> undoes only part of a transaction.</li>
+        <li>In MySQL, DDL statements like <code>ALTER TABLE</code> commit the current transaction implicitly.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-lock"><details><summary><span class="qt">Optimistic vs pessimistic locking. When do you use which?</span><span class="tag core">core</span></summary><div class="ans">
+<pre><code><span class="c">-- pessimistic: hold the row lock until commit (hot rows, short transactions)</span>
+SELECT balance FROM wallet WHERE user_id = ? FOR UPDATE;
+
+<span class="c">-- optimistic: detect the conflict and retry (low contention)</span>
+UPDATE wallet SET balance = balance - :amt, version = version + 1
+ WHERE user_id = :uid AND version = :v AND balance &gt;= :amt;
+<span class="c">-- 0 rows updated → conflict or insufficient funds → re-read and decide</span></code></pre></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-index"><details><summary><span class="qt">Indexes: B+tree, composite, covering, EXPLAIN</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>InnoDB stores the table itself as a B+tree ordered by primary key. A secondary index stores the primary key, so a lookup reads the index and then the table.</li>
+        <li>A composite index on <code>(user_id, created_at)</code> follows the leftmost-prefix rule. It serves <code>WHERE user_id = ? ORDER BY created_at DESC</code>, exactly the transaction history query.</li>
+        <li>A covering index holds every column the query needs, so the table lookup is skipped. Every index slows writes.</li>
+        <li>For history screens, paginate with a cursor (<code>WHERE created_at &lt; ?</code>) rather than a large <code>OFFSET</code>.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-nosql"><details><summary><span class="qt">SQL vs NoSQL: which would you use where at a payments company?</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li><strong>Relational</strong> (MySQL, Aurora, TiDB): ledger, balances, orders. Anything needing multi-row transactions and constraints.</li>
+        <li><strong>DynamoDB:</strong> key-value access at huge scale with predictable latency: idempotency records, sessions, device tokens. Design the tables around your queries and avoid hot partition keys.</li>
+        <li><strong>Redis:</strong> caching, rate limiting, short-lived tokens. Never the source of truth for money.</li>
+        <li>Scaling SQL: read replicas (watch replication lag, and read your own writes from the primary), sharding by user ID, or a distributed SQL database.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-cache"><details><summary><span class="qt">Caching patterns and how caches fail</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>Cache-aside: on a miss, load from the database and fill the cache; on a write, invalidate. Add random jitter to TTLs.</li>
+        <li><strong>Stampede:</strong> a hot key expires and thousands of requests hit the database at once. Fix: let one request reload it, or refresh early. <strong>Penetration:</strong> lookups for keys that don't exist. Fix: cache the "not found" result, or use a Bloom filter. <strong>Avalanche:</strong> many keys expire at the same moment. Fix: jittered TTLs.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-schema"><details><summary><span class="qt">Design the relational schema for bank accounts and transfers</span><span class="tag core">core</span><span class="tag bank">Bank</span></summary><div class="ans">
+<pre><code>CREATE TABLE account (
+  account_id   BIGINT PRIMARY KEY,
+  customer_id  BIGINT NOT NULL,
+  type         VARCHAR(16) NOT NULL,       <span class="c">-- ORDINARY, TIME_DEPOSIT</span>
+  currency     CHAR(3) NOT NULL DEFAULT 'JPY',
+  balance      BIGINT NOT NULL,             <span class="c">-- minor units; cached from ledger</span>
+  status       VARCHAR(16) NOT NULL,        <span class="c">-- ACTIVE, FROZEN, CLOSED</span>
+  version      BIGINT NOT NULL,
+  CHECK (balance &gt;= 0)
+);
+CREATE TABLE journal (                      <span class="c">-- one business event</span>
+  journal_id   BIGINT PRIMARY KEY,
+  kind         VARCHAR(24) NOT NULL,        <span class="c">-- TRANSFER, INTEREST, FEE, REVERSAL</span>
+  external_ref VARCHAR(64) NOT NULL UNIQUE, <span class="c">-- idempotency</span>
+  booked_at    TIMESTAMP(6) NOT NULL,
+  value_date   DATE NOT NULL                <span class="c">-- business date, not wall clock</span>
+);
+CREATE TABLE entry (                        <span class="c">-- append-only, sums to 0 per journal</span>
+  journal_id   BIGINT NOT NULL REFERENCES journal,
+  account_id   BIGINT NOT NULL REFERENCES account,
+  amount       BIGINT NOT NULL,             <span class="c">-- signed: -debit / +credit</span>
+  PRIMARY KEY (journal_id, account_id),
+  INDEX (account_id, journal_id)            <span class="c">-- statement query</span>
+);</code></pre>
+        <ul>
+          <li>Talk through the choices: integer yen instead of floats, append-only entries, a unique external reference for idempotency, a <strong>value date</strong> separate from the booking timestamp (a transfer made at 23:59 on a holiday settles on the next business day), and <code>CHECK</code> constraints so the database enforces the rules too.</li>
+          <li>Migrations run through Flyway, and they must be backward-compatible (expand, then migrate, then contract) because old and new pods run side by side during a rolling deploy.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-dynamo"><details><summary><span class="qt">NoSQL schema design: model it in DynamoDB</span><span class="tag core">core</span><span class="tag pay">Payments</span><span class="tag bank">Bank</span></summary><div class="ans"><ul>
+        <li>Start from the <strong>access patterns</strong>, not the entities. List them first: get a payment by ID, list a user's payments newest first, look up an idempotency key.</li>
+        <li>Single table: <code>PK = USER#123</code>, <code>SK = PAY#2026-09-15T10:00:00#p789</code> serves the history query with a <code>Query</code> that uses <code>ScanIndexForward=false</code>. A GSI on <code>PK = PAY#p789</code> serves lookup by ID.</li>
+        <li>Idempotency: <code>PutItem</code> with <code>ConditionExpression attribute_not_exists(PK)</code> plus a TTL attribute so old keys expire. Use <code>TransactWriteItems</code> (up to 100 items) when two writes must happen together.</li>
+        <li>Hot partitions: a merchant with millions of payments per day as a single PK gets throttled. Add a shard suffix (<code>MERCHANT#9#07</code>) and fan out reads across the shards.</li>
+        <li>Consistency: GSIs are eventually consistent, and strongly consistent reads work only on the base table. Know this before claiming DynamoDB for balances.</li>
+        <li>TiDB and Aurora are the other side of the trade: SQL and transactions, scaling out (TiDB) or up with read replicas (Aurora).</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-b-redis"><details><summary><span class="qt">Redis as a distributed cache: cluster, eviction, keeping it consistent with the DB</span><span class="tag core">core</span><span class="tag pay">Payments</span></summary><div class="ans"><ul>
+        <li><strong>Redis Cluster</strong> splits keys across 16,384 hash slots. A multi-key operation needs all its keys in the same slot, so use hash tags: <code>{user:123}:limits</code>. Replicas are asynchronous, so a failover can lose the latest writes.</li>
+        <li>Eviction: <code>allkeys-lru</code> or <code>allkeys-lfu</code> for a pure cache. <code>noeviction</code> when losing a key would be a bug, e.g. rate-limit counters. Watch memory fragmentation and big keys.</li>
+        <li>Consistency with the database: update the database, then <strong>delete</strong> the cache key (don't write the new value, or two concurrent writers can leave a stale one). For stronger guarantees, invalidate from change data capture events. Set a TTL anyway as a safety net.</li>
+        <li>Local cache (Caffeine) plus Redis: fastest for reads, but every pod needs invalidation, e.g. via Redis Pub/Sub. Keep local TTLs short.</li>
+        <li>Latency: one slow command like <code>KEYS *</code> blocks the single-threaded event loop for everyone. Use <code>SCAN</code>, pipelines, and connection pools (Lettuce).</li></ul></div></details></div>
+
+      <div class="qgroup-label"><h3>基 Distributed systems</h3><span></span></div>
+
+      <div class="q"><input type="checkbox" id="q-d-cap"><details><summary><span class="qt">CAP / PACELC. Which side should a wallet choose?</span><span class="tag rep">reported</span></summary><div class="ans"><p>During a network partition, a system must choose between staying consistent and staying available. PACELC adds that even without a partition, you trade latency against consistency. <strong>Balances and the ledger choose consistency</strong>: refuse the payment rather than allow a double spend. Transaction history, notifications and points can be eventually consistent.</p></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-d-micro"><details><summary><span class="qt">Monolith vs microservices</span><span class="tag rep">reported</span></summary><div class="ans"><ul>
+        <li>Microservices give teams independent deploys, independent scaling and fault isolation. The cost: network failures, distributed transactions, harder debugging and more operations work.</li>
+        <li>PayPay itself moved from a monolith to microservices. Bring your own story of splitting a service or a database, e.g. with the strangler pattern.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-d-kafka"><details><summary><span class="qt">Kafka: ordering, delivery guarantees, consumer groups</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>Order is guaranteed only <strong>within one partition</strong>. Key messages by <code>paymentId</code> or <code>userId</code> so one entity's events stay in order.</li>
+        <li>Within a consumer group, each partition goes to one consumer, so the partition count caps how many consumers can work in parallel.</li>
+        <li>Committing the offset after processing gives at-least-once delivery, so <strong>consumers must handle duplicates</strong> (e.g. a table of processed event IDs). Exactly-once exists only inside Kafka, using the idempotent producer and transactions.</li>
+        <li>For messages that keep failing, use a retry topic and a dead-letter topic. Monitor consumer lag.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-d-outbox"><details><summary><span class="qt">The dual-write problem, the outbox pattern, saga vs two-phase commit</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>If you save to the database and then publish to Kafka, a crash between the two leaves them out of sync. <strong>Outbox pattern:</strong> insert the event into an outbox table in the <em>same</em> database transaction, then a separate process publishes it (by polling, or change data capture like Debezium).</li>
+        <li>Two-phase commit blocks when its coordinator fails, and banks don't support it anyway.</li>
+        <li><strong>Saga:</strong> a chain of local transactions, each with a compensating step. Example: debit the wallet, the bank charge fails, refund the wallet.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-d-resil"><details><summary><span class="qt">Timeouts, retries and circuit breakers (Resilience4j)</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>Every remote call gets a timeout. Retry only idempotent operations, with exponential backoff and random jitter, and cap the total retries.</li>
+        <li>A circuit breaker is closed (normal), opens after repeated failures (fail fast without calling), then goes half-open to test with a few calls. Bulkheads give each dependency its own thread pool, so one slow service can't use them all.</li>
+        <li>A timeout does <strong>not</strong> mean the call failed. With a bank, the outcome is <em>unknown</em>: check the status with the bank or reconcile before retrying.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-d-platform"><details><summary><span class="qt">Platform components: a REST API, a Pub/Sub system, a database client</span><span class="tag core">core</span><span class="tag pay">Payments</span><span class="tag bank">Bank</span></summary><div class="ans"><ul>
+        <li><strong>REST API:</strong> resource nouns (<code>POST /payments</code>, <code>GET /payments/{id}</code>), an <code>Idempotency-Key</code> header on POST, cursor pagination, versioning in the path or a header, and error bodies with a stable machine-readable code. Declarative clients like <strong>Feign</strong> generate the caller side, so wrap them with Resilience4j timeouts and retries.</li>
+        <li><strong>Pub/Sub vs queue:</strong> Pub/Sub delivers every event to every subscriber group (Kafka topics, SNS). A queue gives each message to one worker (SQS). Designing one yourself means choosing ordering scope (per key), acknowledgement mode, retention, replay, and a dead-letter path.</li>
+        <li><strong>Database client:</strong> a connection pool (HikariCP: start around 2× the database's CPU cores, not 200), statement timeouts, retrying only on errors known to be safe (deadlock, serialization failure), read/write routing to replicas, and metrics per query. If you have written a shared library like this, it's the best story for this line of the posting.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-d-aws"><details><summary><span class="qt">Which AWS services would you use for a payments or banking backend, and why?</span><span class="tag core">core</span><span class="tag pay">Payments</span><span class="tag bank">Bank</span></summary><div class="ans"><ul>
+        <li><strong>Compute:</strong> EKS (PayPay uses Kubernetes and ArgoCD). <strong>Data:</strong> Aurora MySQL (storage copied across 3 AZs; a replica usually takes over in under a minute), DynamoDB, ElastiCache for Redis. <strong>Messaging:</strong> MSK (Kafka) or SQS/SNS. <strong>Security:</strong> KMS for encryption keys, Secrets Manager, IAM roles per service account, PrivateLink or VPC endpoints so traffic never touches the internet.</li>
+        <li>Resilience: multi-AZ by default. Multi-region is a cost and consistency decision: active-passive for the ledger, active-active only for stateless or eventually consistent parts.</li>
+        <li>Say why you chose each service, and name one you would <em>not</em> use and why. That's the "middleware selection" skill the Core Banking posting asks for.</li></ul></div></details></div>
+
+      <div class="qgroup-label"><h3>基 Production: tuning, security, operations</h3><span></span></div>
+
+      <div class="q"><input type="checkbox" id="q-p-tune"><details><summary><span class="qt">p99 latency on an API doubled. Walk through tuning it.</span><span class="tag core">core</span><span class="tag bank">Bank</span></summary><div class="ans"><ul>
+        <li><strong>Measure before changing anything.</strong> Use a trace to find which span grew: the application, the connection pool wait, the database, or a downstream call.</li>
+        <li><strong>Database:</strong> slow query log, <code>EXPLAIN ANALYZE</code>, a missing composite index, N+1 queries from JPA lazy loading (fix with a fetch join or batch size), lock waits (<code>performance_schema.data_lock_waits</code>), large <code>OFFSET</code> pagination.</li>
+        <li><strong>Application:</strong> an exhausted HikariCP pool shows up as <code>connection is not available, request timed out</code>. Look at GC pauses in the logs, thread dumps for blocked threads, and serialization cost.</li>
+        <li><strong>Load test</strong> the fix at the target traffic (Gatling or k6) and compare p50, p99 and p99.9 before and after. Report numbers, not "it felt faster".</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-p-sec"><details><summary><span class="qt">Security-conscious development for a financial web app</span><span class="tag core">core</span><span class="tag bank">Bank</span></summary><div class="ans"><ul>
+        <li><strong>OWASP Top 10</strong>, with the fix for each: broken access control (check ownership on every request, e.g. <code>GET /accounts/{id}</code> for someone else's ID, known as IDOR), injection (bound parameters only), cryptographic failures (TLS everywhere, KMS-managed keys, PII encrypted at rest), SSRF, vulnerable dependencies (Snyk in CI, which PayPay uses).</li>
+        <li><strong>Authentication:</strong> short-lived tokens, step-up authentication for transfers, rate limits and lockouts on login and OTP. Service-to-service: mutual TLS or signed tokens.</li>
+        <li><strong>Data:</strong> mask account numbers and personal data in logs, keep an append-only audit log of who changed what, separate duties for production access.</li>
+        <li><strong>Japan-specific:</strong> Japanese banks follow the <strong>FISC Security Guidelines</strong> (from the Center for Financial Industry Information Systems) and the FSA's supervisory guidance. Personal data falls under the APPI. Naming these shows domain awareness. You don't need to recite them.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-p-obs"><details><summary><span class="qt">Monitoring, alerts and failure analysis: what do you page on?</span><span class="tag core">core</span><span class="tag pay">Payments</span><span class="tag bank">Bank</span></summary><div class="ans"><ul>
+        <li><strong>Three signals:</strong> metrics (RED per endpoint: rate, errors, duration; USE per resource), structured logs with a trace ID (PayPay uses ELK and Kibana), and distributed traces.</li>
+        <li><strong>Page on symptoms users feel, tied to an SLO:</strong> payment success rate, p99 latency, and <em>money correctness</em>, meaning ledger imbalance, unreconciled bank transactions older than N minutes, and stuck UNKNOWN payments. Send CPU and disk alerts to a ticket, not a page. Alert on how fast the error budget is burning, not on single spikes.</li>
+        <li><strong>Failure analysis:</strong> a timeline, the trigger, the root cause (keep asking "why"), what made the impact bigger, then action items with owners. Blameless. A real example worth knowing: in October 2023 the Zengin interbank network failed for about two days after a system update, and transfers between some banks stopped. Explain how you'd detect and contain that from a bank's side.</li></ul></div></details></div>
+    </div>
+
+    <!-- Design -->
+    <div class="qgroup" data-group="Payments design">
+      <div class="qgroup-label"><h3>設 Payments system design</h3><span class="qg-count"></span></div>
+      <p class="t-note">Split the 45 minutes: <strong>8 min</strong> requirements (top-up, QR pay, P2P send, refunds, history; no double charges, strongly consistent balances, 99.99% availability, campaign spikes) → <strong>4 min</strong> estimates (say assumptions aloud: 20M payments/day ≈ 230 per second on average, 10–20× that at campaign peaks) → <strong>23 min</strong> design → <strong>10 min</strong> failure cases.</p>
+      <div class="flow" aria-label="Payment request flow">
+        <span>App + idempotency key</span><em>→</em><span>API gateway</span><em>→</em><span class="hot">Payment service</span><em>→</em><span class="hot">Wallet / ledger DB</span><em>→</em><span>Outbox</span><em>→</em><span>Kafka</span><em>→</em><span>History · notifications · points · settlement</span>
+      </div>
+      <div class="flow" aria-label="Bank flow" style="margin-top:6px">
+        <span class="hot">Payment service</span><em>→</em><span>Bank adapter: timeout + circuit breaker</span><em>→</em><span>Bank API</span><em>⇢</em><span>Webhook / status check</span><em>→</em><span>Daily reconciliation</span>
+      </div>
+
+      <div class="q"><input type="checkbox" id="q-s-double"><details><summary><span class="qt">"The user taps Pay three times." How do you guarantee exactly one charge?</span><span class="tag rep">reported</span></summary><div class="ans">
+        <p>Answer with layers. A fix on the client alone is never enough.</p>
+        <ul>
+          <li><strong>Client:</strong> disable the button, generate one <code>Idempotency-Key</code> (a UUID) per checkout, and send the <em>same</em> key on every retry.</li>
+          <li><strong>Server:</strong> an idempotency table with a <strong>unique constraint</strong> on <code>(user_id, idem_key)</code>, storing a hash of the request, its status, and the response.</li>
+          <li><strong>Duplicate arrives while the first is still running:</strong> return 409 and let the client poll. If the first already finished, return the saved response. Same key but a different request body: return 422.</li>
+          <li><strong>Business key:</strong> a unique <code>merchant_order_id</code> per merchant, so even a buggy client sending new keys can't pay the same order twice.</li>
+          <li><strong>Downstream:</strong> send the bank a deterministic ID so its side is idempotent too, and deduplicate Kafka consumers by event ID.</li>
+        </ul>
+<pre><code>@Transactional
+public PaymentResponse pay(PayCommand cmd) {
+    try {
+        idemRepo.insert(cmd.userId(), cmd.idemKey(), cmd.hash(), Status.IN_PROGRESS); <span class="c">// unique index</span>
+    } catch (DuplicateKeyException e) {
+        IdemRecord r = idemRepo.find(cmd.userId(), cmd.idemKey());
+        if (!r.hash().equals(cmd.hash())) throw new IdempotencyMismatch();     <span class="c">// 422</span>
+        if (r.status() == Status.IN_PROGRESS) throw new RequestInProgress();   <span class="c">// 409, client polls</span>
+        return r.response();                                                   <span class="c">// replay</span>
+    }
+    int rows = walletRepo.debit(cmd.userId(), cmd.amount());  <span class="c">// … WHERE balance &gt;= :amt</span>
+    if (rows == 0) throw new InsufficientFunds();              <span class="c">// rolls back the idem row too</span>
+    Payment p = paymentRepo.save(Payment.captured(cmd));
+    ledger.post(p);                                            <span class="c">// debit user, credit merchant</span>
+    outbox.add(new PaymentCaptured(p.id()));
+    PaymentResponse resp = PaymentResponse.of(p);
+    idemRepo.complete(cmd.userId(), cmd.idemKey(), resp);
+    return resp;
+}</code></pre>
+        <p>Explain the trade-off: the idempotency row sits in the same transaction, so a crash can't leave anything half done. Flows that call a bank can't work this way. Commit a PENDING state first, call the bank outside the transaction, then update the state.</p></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-s-state"><details><summary><span class="qt">Payment state machine and the "unknown" bank result</span><span class="tag rep">reported</span></summary><div class="ans">
+        <div class="flow"><span>CREATED</span><em>→</em><span>PENDING_BANK</span><em>→</em><span class="hot">SUCCEEDED</span><em>/</em><span>FAILED</span><em>/</em><span>UNKNOWN</span><em>→</em><span>REFUNDED</span></div>
+        <ul>
+          <li>Enforce transitions with a conditional update: <code>UPDATE payment SET status = 'SUCCEEDED' WHERE id = ? AND status = 'PENDING_BANK'</code>. A duplicate webhook then changes nothing.</li>
+          <li>A bank timeout means UNKNOWN, <strong>not</strong> FAILED. A background job asks the bank for the status, and the daily reconciliation against the bank's settlement file catches anything still open.</li>
+          <li>For top-ups, credit the wallet only after the bank confirms. For payouts, hold the funds first, then finalise.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-s-ledger"><details><summary><span class="qt">Why a double-entry ledger instead of just a balance column?</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>Every money movement is a set of entries that sum to zero, e.g. user wallet −¥1,000 and merchant payable +¥1,000. Entries are append-only: never updated or deleted. A mistake is fixed with a reversing entry.</li>
+        <li>The balance is a cached total of the ledger, updated in the same transaction and regularly checked against it. This gives the audit trail that financial regulators in Japan expect.</li>
+        <li>Store money as <code>long</code> minor units or <code>BigDecimal</code> plus a currency code, never <code>double</code>. Yen has no decimal places.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-s-spike"><details><summary><span class="qt">Campaign spike: "20% cashback for the first 1M payments." How does the system survive?</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>PayPay is known for huge cashback campaigns, so expect this follow-up.</li>
+        <li>Keep the payment path lean: calculate cashback <strong>asynchronously</strong> from the PaymentCaptured event, so an overloaded campaign service can't block payments.</li>
+        <li>Budget: an atomic decrement in Redis (a Lua script) as a fast gate, with the database as the source of truth. Accept a small overshoot, or reserve budget in chunks.</li>
+        <li>Token-bucket rate limits per user and merchant, capacity scaled up before launch, shedding non-critical reads, and queueing writes.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-s-core"><details><summary><span class="qt">Design a core banking system: accounts, transfers, interest, end of day</span><span class="tag core">core</span><span class="tag bank">Bank</span></summary><div class="ans">
+        <div class="flow"><span>Channels: app, PayPay, ATM</span><em>→</em><span class="hot">Transfer / posting service</span><em>→</em><span class="hot">Ledger DB</span><em>→</em><span>Zengin gateway</span><em>→</em><span>Batch: interest · statements · regulatory reports</span></div>
+        <ul>
+          <li><strong>Posting engine:</strong> every transaction becomes a balanced journal with a unique reference. Account-level serialisation (row lock in account-ID order, or one Kafka partition per account) prevents overdrafts.</li>
+          <li><strong>Holds:</strong> card authorisations and pending transfers reduce the <em>available</em> balance before the ledger balance changes. Two numbers: ledger balance and available balance.</li>
+          <li><strong>Interest:</strong> accrue daily on the end-of-day balance, post it on a schedule, withhold tax on it (20.315% on deposit interest in Japan), and round in the customer's favour or by the documented rule. The batch must be <strong>safe to rerun</strong>: key each posting by <code>(account, value_date, INTEREST)</code>.</li>
+          <li><strong>End of day while staying open 24/7:</strong> older systems stopped for batch runs, but modern ones don't. Cut over the <em>business date</em> logically, snapshot balances, and run batches against the snapshot while live postings continue.</li>
+          <li><strong>Reconciliation:</strong> internal ledger vs Zengin settlement vs BOJ current account, every day, with every difference explained.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-s-zengin"><details><summary><span class="qt">An interbank transfer through Zengin: cut-offs, failures, unknown results</span><span class="tag bank">Bank</span><span class="tag pay">Payments</span></summary><div class="ans"><ul>
+        <li>The <strong>Zengin system</strong> (<span class="jp">全銀システム</span>) links Japanese banks for domestic transfers. Since 2018 it has run 24/7 for most retail transfers, alongside the traditional weekday core hours. Banks settle the net amounts with each other through their Bank of Japan accounts (BOJ-NET).</li>
+        <li>Your bank's side: debit the sender and move the funds into a clearing (suspense) account in one transaction, send the message, then finalise or reverse when the result arrives. An incoming transfer to a closed account or a mismatched name gets <strong>returned</strong> (<span class="jp">組戻し</span>), which is a new transaction, never a deletion.</li>
+        <li>Timeouts become UNKNOWN, followed by an inquiry and reconciliation. Once sent, a transfer can't be taken back.</li>
+        <li>Bank-account top-ups for PayPay wallets use the same thinking, which is why this item is tagged for both roles.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-s-legacy"><details><summary><span class="qt">Modernise a legacy core banking system without losing reliability</span><span class="tag core">core</span><span class="tag bank">Bank</span></summary><div class="ans"><ul>
+        <li><strong>Never a big-bang cutover.</strong> Use the <strong>strangler fig</strong> pattern: put a routing layer in front of the old system and move one capability at a time (balance inquiry first, then statements, then transfers last).</li>
+        <li><strong>Data:</strong> stream changes from the old database with change data capture into the new store. Run both in <strong>parallel</strong> with a daily comparison of balances and journals, and cut over only when there have been zero differences for weeks.</li>
+        <li><strong>Shadow traffic:</strong> send real requests to the new service, compare responses, and discard its output. Feature flags route by customer segment: employees first, then 1%, then everyone. Every step has a rollback.</li>
+        <li><strong>Leave some things alone:</strong> if the old system handles interest correctly, wrap it behind an API and replace it later. Reliability comes first, and the posting says exactly that.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-s-mw"><details><summary><span class="qt">Middleware selection: justify Kafka vs SQS, Aurora vs TiDB vs DynamoDB</span><span class="tag core">core</span><span class="tag bank">Bank</span><span class="tag pay">Payments</span></summary><div class="ans">
+        <div class="scroller"><table><thead><tr><th>Need</th><th>Pick</th><th>Why not the other</th></tr></thead><tbody>
+          <tr><td>Ordered event log, replay, many consumers</td><td>Kafka / MSK</td><td class="t-note">SQS FIFO caps throughput per message group, and messages are deleted once consumed, so there's no replay</td></tr>
+          <tr><td>Simple job queue, per-message retry</td><td>SQS</td><td class="t-note">Kafka needs partition planning and more operations work</td></tr>
+          <tr><td>Ledger, multi-row transactions, moderate scale</td><td>Aurora MySQL</td><td class="t-note">DynamoDB transactions are limited, with no joins or constraints</td></tr>
+          <tr><td>SQL transactions beyond one writer's capacity</td><td>TiDB</td><td class="t-note">Sharding Aurora yourself moves the complexity into application code</td></tr>
+          <tr><td>Key-value lookups at huge scale, predictable latency</td><td>DynamoDB</td><td class="t-note">Relational databases need sharding and connection management at that volume</td></tr>
+        </tbody></table></div>
+        <p>A framework to say out loud: consistency needs → throughput and growth → operational cost (who's on call for it) → the team's existing expertise → how you'd get off it later. End with the one risk you accept.</p></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-s-more"><details><summary><span class="qt">Five more designs to practise: 45 minutes each, timed, out loud</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>P2P money transfer with split-bill requests</li>
+        <li>Transaction history for 50M users (sharding, cursor pagination, separate read model)</li>
+        <li>A distributed rate limiter for a public payments API</li>
+        <li>Merchant settlement and payout batch: daily, safe to rerun, never pays twice</li>
+        <li>A fraud check inside the payment path under a tight latency budget</li></ul></div></details></div>
+    </div>
+
+    <!-- AI-first -->
+    <div class="qgroup" data-group="AI-first engineering">
+      <div class="qgroup-label"><h3>智 AI-first engineering</h3><span class="qg-count"></span></div>
+      <p class="t-note">A <strong>required</strong> qualification for the Payments role: "AI is not optional — it is a mandatory part of our daily engineering workflow." Answer with real tasks and numbers from your own work, not opinions about AI.</p>
+
+      <div class="q"><input type="checkbox" id="q-ai-flow"><details><summary><span class="qt">"How do you use AI tools in your daily engineering work?"</span><span class="tag core">core</span><span class="tag pay">Payments</span></summary><div class="ans"><ul>
+        <li>Cover the four areas the posting lists: <strong>development, code review, testing, documentation</strong>. Give one concrete example for each, with the tool you used (Claude Code, Copilot, Cursor, or similar).</li>
+        <li>Example shape: "I gave an agent the failing integration test and the stack trace. It found the Jackson config conflict in about 5 minutes, which would have taken me an hour. I checked the fix against the Spring docs before merging."</li>
+        <li>Show where you <em>don't</em> use it, and why: the final call on concurrency and money-movement logic, security decisions, anything you can't verify.</li>
+        <li>Numbers help: time saved on a migration, test coverage added, review turnaround.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-ai-verify"><details><summary><span class="qt">How do you verify AI-generated code before it reaches production?</span><span class="tag core">core</span><span class="tag pay">Payments</span></summary><div class="ans"><ul>
+        <li>Treat it like a pull request from a fast junior engineer: read every line, and never merge code you couldn't explain.</li>
+        <li>Write or check the tests <strong>first</strong>. Ask for edge cases explicitly: duplicates, concurrent calls, overflow, time zones. Generated tests often confirm what the code does instead of what it should do.</li>
+        <li>Common failures to look for: APIs that don't exist, outdated library versions, race conditions hidden in check-then-act code, swallowed exceptions, <code>double</code> used for money.</li>
+        <li>CI still gates everything: static analysis, Snyk, and the same review rules as human-written code.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-ai-risk"><details><summary><span class="qt">AI guardrails at a fintech: data, secrets, licences</span><span class="tag core">core</span><span class="tag pay">Payments</span></summary><div class="ans"><ul>
+        <li>Never paste customer data, account numbers, production logs with personal data, or credentials into a tool the company hasn't approved. Use enterprise versions with data retention turned off.</li>
+        <li>Generated code can reproduce licensed code. Use tools with licence filtering and keep dependency scanning on.</li>
+        <li>Prompt injection matters when agents read untrusted input such as tickets, web pages or logs. Give agents least-privilege credentials and require human approval for destructive actions.</li>
+        <li>For regulated work, keep a record of what an AI changed. The normal PR review trail covers this.</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-ai-build"><details><summary><span class="qt">AI in system design and workflow automation (preferred)</span><span class="tag pay">Payments</span></summary><div class="ans"><ul>
+        <li>The posting prefers "AI-assisted development integrated into system design" and "AI-related open-source contributions or workflow automation". Build one small thing before you apply, so you have something to show.</li>
+        <li>Ideas that fit a backend engineer: a CI step that asks an LLM to review database migrations for locking risks, an internal tool that summarises Kibana error spikes into a draft incident report, or an MCP server exposing read-only service metrics to an agent.</li>
+        <li>In a design interview: use AI for the <em>non-critical</em> path (fraud signals as one input among several, support-ticket triage, merchant onboarding document checks), and keep deterministic logic for the ledger.</li></ul></div></details></div>
+    </div>
+
+    <!-- Behavioral -->
+    <div class="qgroup" data-group="Behavioral">
+      <div class="qgroup-label"><h3>面 Behavioral &amp; culture fit</h3><span class="qg-count"></span></div>
+      <p class="t-note">PayPay hires against its "5 senses". Write at least one story for each row; the Sunday story block fills this in.</p>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>PayPay value (paraphrased)</th><th>What they listen for</th></tr></thead>
+          <tbody>
+            <tr><td>Achieve results at amazing speed</td><td class="t-note">Shipped fast without breaking production; cut scope sensibly</td></tr>
+            <tr><td>Be sincere, work as a professional</td><td class="t-note">Owned a mistake, kept a quality bar, found the root cause of an incident</td></tr>
+            <tr><td>Respect diversity, work as one team</td><td class="t-note">Resolved a cross-team or cross-cultural disagreement</td></tr>
+            <tr><td>Create new value and see it through</td><td class="t-note">Owned something from idea to production to measured result</td></tr>
+            <tr><td>Day-1 mindset, keep challenging</td><td class="t-note">Took a risk, learned something new fast, questioned how things were done</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="q"><input type="checkbox" id="q-h-mistake"><details><summary><span class="qt">"What is the biggest mistake you ever made? What did you learn?"</span><span class="tag rep">reported</span></summary><div class="ans"><p>Choose a real technical mistake with real impact, like a migration that locked a table or a missing idempotency check that created duplicates. Structure: context → your specific error → how you noticed and limited the damage → the lasting fix (a guardrail or process) → what you do differently now. Don't blame others, and don't choose a strength in disguise.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-h-project"><details><summary><span class="qt">"Tell me about your most challenging project."</span><span class="tag rep">reported</span></summary><div class="ans"><p>Use STAR, but spend about 60% of your time on <strong>Action</strong>: the decisions you made, the options you rejected and why, and numbers (latency, throughput, cost, incidents). They'll dig into every technology you mention, so choose the project you know most deeply.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-h-root"><details><summary><span class="qt">"How did you solve a hard problem?" (root-cause story)</span><span class="tag rep">reported</span></summary><div class="ans"><p>The job posting literally says "problem solving as a way of life – always go to root cause!" Tell an incident story: symptom → hypothesis → evidence (logs, metrics, profiler) → root cause → fix → prevention.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-h-why"><details><summary><span class="qt">"Why PayPay? Why Japan?"</span><span class="tag core">core</span></summary><div class="ans"><p>Be specific: payments at national scale in a country moving quickly from cash to cashless, correctness problems you want to work on, and how your stack matches theirs (Java, Spring Boot, Kafka, AWS). For Japan, show you're committed: visa timing, a realistic move date, and your ongoing Japanese study, which your N3 plan proves.</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-h-conflict"><details><summary><span class="qt">Disagreeing with a teammate or manager; speed vs quality</span><span class="tag core">core</span></summary><div class="ans"><p>PayPay's engineering teams are very international. Show that you disagree using data, then commit once a decision is made. On speed vs quality: separate what's reversible (ship fast behind a feature flag) from what isn't (moving money, which gets extra safeguards).</p></div></details></div>
+      <div class="q"><input type="checkbox" id="q-h-ask"><details><summary><span class="qt">Your questions for them</span><span class="tag core">core</span></summary><div class="ans"><ul>
+        <li>How does the team handle on-call and incident reviews?</li>
+        <li>What's still hard after the move from monolith to microservices?</li>
+        <li>How do you load-test before a big campaign?</li>
+        <li>What separates the engineering levels here, and where would this role sit?</li>
+        <li>What visa and relocation support do you offer?</li>
+        <li>Payments: which AI tools does the team use, and how are they approved for code that moves money?</li>
+        <li>Core Banking: which parts of the core are being modernised first, and how do you run the old and new systems in parallel?</li></ul></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-h-oss"><details><summary><span class="qt">"Tell us about a tool you built or an open source contribution."</span><span class="tag core">core</span><span class="tag pay">Payments</span></summary><div class="ans"><p>The Payments posting lists "develop tools and contribute to open source" as a responsibility. An internal tool counts: a CLI that saved on-call time, a shared library, a test harness. Structure: the pain it solved → who used it → adoption or time saved → what you'd change. If you have no open source work yet, one small merged PR to a library you use (Spring, Resilience4j, a Kafka client) before applying is better than none.</p></div></details></div>
+
+      <div class="q"><input type="checkbox" id="q-h-jp"><details><summary><span class="qt"><span class="jp">自己紹介</span> and <span class="jp">志望動機</span>: introduce yourself in Japanese</span><span class="tag bank">Bank</span></summary><div class="ans">
+        <p>The Core Banking interviews are entirely in Japanese. Even for Payments, a 30-second Japanese introduction is a strong signal. Memorise this, then adapt it:</p>
+<pre><code><span class="jp">はじめまして、〇〇と申します。
+バックエンドエンジニアとして5年間、主にJavaとSpring Bootで
+決済・金融系のシステムを開発してまいりました。
+特に、冪等性や排他制御を考慮した高信頼なAPIの設計と、
+性能改善・障害対応を得意としております。
+日本のキャッシュレス化を支えるPayPayで、
+大規模かつ正確な金融基盤づくりに貢献したいと考え、応募いたしました。
+よろしくお願いいたします。</span></code></pre>
+        <div class="scroller"><table><thead><tr><th>Term</th><th>Meaning</th><th>Term</th><th>Meaning</th></tr></thead><tbody>
+          <tr><td class="jp">勘定系システム</td><td class="t-note">core banking system</td><td class="jp">冪等性</td><td class="t-note">idempotency</td></tr>
+          <tr><td class="jp">排他制御</td><td class="t-note">concurrency control / locking</td><td class="jp">整合性</td><td class="t-note">consistency</td></tr>
+          <tr><td class="jp">残高・元帳</td><td class="t-note">balance · ledger</td><td class="jp">突合</td><td class="t-note">reconciliation</td></tr>
+          <tr><td class="jp">振込・組戻し</td><td class="t-note">transfer · return of a transfer</td><td class="jp">障害対応</td><td class="t-note">incident response</td></tr>
+          <tr><td class="jp">性能改善</td><td class="t-note">performance tuning</td><td class="jp">監視・アラート</td><td class="t-note">monitoring · alerts</td></tr>
+          <tr><td class="jp">冗長化</td><td class="t-note">redundancy</td><td class="jp">移行</td><td class="t-note">migration</td></tr>
+        </tbody></table></div>
+        <p>Be honest about your level. Saying "I'm studying for N3 now, and here is my plan and date for N2" makes you look committed. Claiming fluency you don't have ends the interview.</p></div></details></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>The toolkit</h2>
+      <span class="sec-jp">道具</span>
+    </div>
+    <p>Everything the plan uses, with paid options marked. You can run the whole plan free except for two books, and both are worth buying.</p>
+
+    <div class="kit">
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://neetcode.io/practice" target="_blank" rel="noopener noreferrer">NeetCode 150</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">A LeetCode list grouped by pattern, each with a video solution. Follow its groups in phases 1–3 instead of choosing problems at random. Choosing is a decision you don't need to spend energy on.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://leetcode.com/" target="_blank" rel="noopener noreferrer">LeetCode</a></span>
+        <span class="tag free">Free · Premium optional</span>
+        <span class="kit-desc">Where you actually solve problems. Turn off autocomplete in settings; CodeSignal won't give it to you. Premium's company-tagged lists are a nice extra, not a requirement.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name">Designing Data-Intensive Applications</span>
+        <span class="tag paid">Paid · book</span>
+        <span class="kit-desc">Martin Kleppmann. A candidate who passed the loop recommended ch. 2–3 and 5–9. Ch. 7 (transactions) is the single most useful chapter for PayPay's backend round.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name">Java Concurrency in Practice</span>
+        <span class="tag paid">Paid · book</span>
+        <span class="kit-desc">Old, but still the best explanation of data races, visibility and safe publication. Read ch. 1–5, 8 and 10 in phase 2.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://hpbn.co/" target="_blank" rel="noopener noreferrer">High Performance Browser Networking</a></span>
+        <span class="tag free">Free online</span>
+        <span class="kit-desc">Ilya Grigorik. Ch. 2–4 (TCP, UDP, TLS) are exactly the "what happens when you open a URL" material.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://github.com/donnemartin/system-design-primer" target="_blank" rel="noopener noreferrer">System Design Primer</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">Broad coverage of caches, queues, consistency and scaling. Use it as a checklist to find gaps, not as a script for payment designs.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://stripe.com/blog/idempotency" target="_blank" rel="noopener noreferrer">Stripe: Designing robust APIs with idempotency</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">A short article from a payments company on the exact problem behind the "multiple pay clicks" question. Read it before phase 4.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://www.brendangregg.com/linuxperf.html" target="_blank" rel="noopener noreferrer">Brendan Gregg: Linux performance</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">The map of Linux diagnostic tools. Enough to answer "the service is slow, what do you check?" with real commands.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://www.baeldung.com/" target="_blank" rel="noopener noreferrer">Baeldung</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">Quick, accurate Java and Spring explanations for GC, ConcurrentHashMap and <code>@Transactional</code> propagation. Look things up here while you study.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://www.tryexponent.com/" target="_blank" rel="noopener noreferrer">Exponent</a></span>
+        <span class="tag paid">Paid · free peer mocks</span>
+        <span class="kit-desc">Peer mock interviews with other candidates (Pramp is now part of Exponent). Week 8's mock loop. A friend who is a senior engineer works just as well.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://insideout.paypay.ne.jp/en/" target="_blank" rel="noopener noreferrer">PayPay Inside-Out</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">PayPay's own blog about its people and culture. Read three or four posts before the culture-fit round, so your "Why PayPay?" answer uses their words, not generic ones.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://owasp.org/Top10/" target="_blank" rel="noopener noreferrer">OWASP Top 10</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">The Core Banking role asks for "security-conscious development". Learn the ten categories and the fix for each, using examples from your own services.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://sre.google/sre-book/table-of-contents/" target="_blank" rel="noopener noreferrer">Google SRE book</a></span>
+        <span class="tag free">Free online</span>
+        <span class="kit-desc">Ch. 6 (monitoring distributed systems) and ch. 15 (postmortem culture) cover the "monitoring, alerts and failure analysis" duty in both postings. Read them in phase 4.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://martinfowler.com/bliki/StranglerFigApplication.html" target="_blank" rel="noopener noreferrer">Martin Fowler: Strangler Fig Application</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">The standard vocabulary for replacing a legacy system gradually, which is what "modernising financial systems while maintaining reliability" means in the Core Banking posting.</span>
+      </div>
+      <div class="kit-item">
+        <span class="kit-name"><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html" target="_blank" rel="noopener noreferrer">AWS: DynamoDB best practices</a></span>
+        <span class="tag free">Free</span>
+        <span class="kit-desc">Partition key design, single-table modelling and conditional writes. Enough to answer NoSQL schema questions with real API names.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="tracker">
+    <div class="sec-head">
+      <h2>Week-by-week tracker</h2>
+      <span class="sec-jp">記録</span>
+    </div>
+    <p>Tick a week when you have done the work, not when the week has passed. If week 3's topics take until week 4, you're still on week 3. The number is progress, not a calendar.</p>
+
+    <div class="progress-head">
+      <span class="progress-stat"><b id="pct">0%</b> &nbsp;<span id="count">0 / 8 weeks</span></span>
+      <div class="bar"><div class="bar-fill" id="fill"></div></div>
+      <div class="btn-row">
+        <button class="btn" id="export" type="button">Export .md</button>
+        <button class="btn" id="reset" type="button">Reset</button>
+      </div>
+    </div>
+
+    <div class="track-group" id="weeks"></div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Rules that make it survive</h2>
+      <span class="sec-jp">規律</span>
+    </div>
+    <p>Eight weeks alongside a full-time job is long enough for discipline to slip somewhere. These rules decide what happens when it does.</p>
+
+    <div class="rules">
+      <div class="rule-item"><h3>The minimum viable day is 20 minutes</h3><p class="t-note">On a bad day, answer three questions out loud and stop. That's the designed floor, not failure. A 20-minute day keeps your recall warm; a zero day makes the next one twice as hard to start.</p></div>
+      <div class="rule-item"><h3>Twenty-five minutes, then read the solution</h3><p class="t-note">Being stuck for an hour teaches less than reading a solution at 25 minutes and re-solving it cold three days later. The Sunday redo block exists for exactly this.</p></div>
+      <div class="rule-item"><h3>Say it out loud, in English</h3><p class="t-note">Knowing an answer in your head and saying it clearly to an interviewer are different skills. Every theory block ends with you speaking, and recording yourself counts double.</p></div>
+      <div class="rule-item"><h3>Your CV is their question list</h3><p class="t-note">PayPay interviewers dig into whatever technology you list. For each item on your CV, prepare a two-minute explanation and one production story. If you can't, remove the item.</p></div>
+      <div class="rule-item"><h3>Bad week: cut theory, keep coding</h3><p class="t-note">When a week collapses, keep the daily problem and drop the reading. Coding speed fades fastest, and the coding test comes before anything else in the loop.</p></div>
+      <div class="rule-item"><h3>Don't let Japanese drop to zero</h3><p class="t-note">Keep the N3 plan's 20-minute SRS reviews running every day, even in this sprint. "I'm studying for N3 and I've never missed my reviews" is a strong answer to "Why Japan?" Your Japanese level also decides when the Core Banking role, which needs N2 and interviews in Japanese, becomes open to you.</p></div>
+      <div class="rule-item"><h3>Use AI while you prepare, and keep the evidence</h3><p class="t-note">The Payments role requires AI in your daily workflow. Use an AI tool to review your timed-set solutions and quiz you on the bank. Note one before/after example each week. By week 8 you have real stories instead of claims.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Before week one</h2>
+      <span class="sec-jp">準備</span>
+    </div>
+    <div class="stack">
+      <ul>
+        <li>Pick your <strong>fixed daily hour</strong> and add it to your calendar as a recurring event. If you're also studying Japanese, use a different slot, not the N3 hour.</li>
+        <li>Rewrite your <strong>CV</strong> around impact with numbers (throughput, latency, incidents), and remove anything you can't defend under ten minutes of questions.</li>
+        <li>Set your <strong>LinkedIn</strong> to open to work, with Tokyo as a location. Many PayPay candidates were first contacted by a recruiter.</li>
+        <li>Create a <strong>LeetCode</strong> account, turn off autocomplete, and bookmark NeetCode 150.</li>
+        <li>Find one <strong>mock partner</strong> now: a senior engineer friend or an Exponent account. Week 8 depends on it, and scheduling takes time.</li>
+        <li>List <strong>eight story candidates</strong>, one line each: an incident, a mistake, a disagreement, a fast delivery, a big project, a thing you learned quickly, a migration, a mentoring moment.</li>
+        <li>Open a plain <strong>error log</strong>: date, problem, why you failed, the pattern. It's what tells you whether the plan is working.</li>
+        <li>Pick your <strong>AI tool</strong> and start an "AI log" alongside the error log: task, what it got wrong, how you checked it, time saved. It becomes your answer to the Payments role's AI requirement.</li>
+        <li>Save both <strong>job postings</strong> as PDFs. Postings get taken down, and you'll want the exact wording before each round.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>Where this comes from</h2>
+      <span class="sec-jp">出典</span>
+    </div>
+    <p class="t-note">Candidate reports differ by team and year, so treat them as patterns, not a script. The r/JapanJobs thread linked when this was built couldn't be read automatically. Its details are not included yet.</p>
+    <ul class="sources">
+      <li><a href="https://job-boards.greenhouse.io/paypay/jobs/5683668004" target="_blank" rel="noopener noreferrer">PayPay: Backend Engineer (Payments)</a>: AI-first requirement, concurrency and distributed computing, NoSQL and cache, tech stack</li>
+      <li><a href="https://job-boards.greenhouse.io/paypay/jobs/5587090004" target="_blank" rel="noopener noreferrer">PayPay: Backend Engineer, Core Banking System (<span class="jp">バックエンドエンジニア</span>)</a>: schema design, tuning and security, middleware selection, modernisation, Japanese N1/N2</li>
+      <li><a href="https://gaijineer.co/software-engineer-interview-experience-with-paypay-japan" target="_blank" rel="noopener noreferrer">Gaijineer: Software Engineer interview experience with PayPay Japan</a>: loop structure, URL and ACID questions, reading list</li>
+      <li><a href="https://www.codingkaro.in/jobs-internships/leetcode-interview-experience/PayPay" target="_blank" rel="noopener noreferrer">CodingKaro: PayPay interview experiences (2025)</a>: LC 2672, 2508, 1584, the multiple pay clicks question</li>
+      <li><a href="https://leetcode.com/discuss/interview-experience/6832936/" target="_blank" rel="noopener noreferrer">LeetCode Discuss: PayPay Japan, June 2025, Backend Engineer</a></li>
+      <li><a href="https://leetcode.com/discuss/interview-experience/1806599/PayPay-Japan-or-Entire-interview/" target="_blank" rel="noopener noreferrer">LeetCode Discuss: PayPay Japan, entire interview</a></li>
+      <li><a href="https://singhneeruk.medium.com/preparing-for-backend-engineer-role-paypay-156126bd3e78" target="_blank" rel="noopener noreferrer">Medium: Preparing for Backend Engineer role at PayPay</a>: coding test format, Java concurrency, payments design</li>
+      <li><a href="https://www.interviewbit.com/paypay-interview-questions/" target="_blank" rel="noopener noreferrer">InterviewBit: PayPay interview questions</a>: GC eligibility, Spring IoC, autocommit and rollback, deadlock and livelock</li>
+      <li><a href="https://japan-dev.com/jobs/paypay/paypay-back-end-engineer" target="_blank" rel="noopener noreferrer">Japan Dev: PayPay back-end engineer posting</a>: requirements and tech stack</li>
+      <li><a href="https://www.paypay-card.co.jp/recruit/en/work-style/5-senses/" target="_blank" rel="noopener noreferrer">PayPay 5 senses</a> · <a href="https://www.glassdoor.com/Interview/PayPay-Backend-Engineer-Interview-Questions-EI_IE3735809.0,6_KO7,23.htm" target="_blank" rel="noopener noreferrer">Glassdoor: PayPay backend interviews</a> · <a href="https://www.levels.fyi/en-gb/companies/paypay/salaries/software-engineer/title/backend-software-engineer" target="_blank" rel="noopener noreferrer">Levels.fyi: PayPay backend pay</a></li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Built for a floor of 10 hours a week, for an engineer who already writes production Java. Check both assumptions against your first two weeks of logged hours and timed sets before you commit to the week-5 application date.</p>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var PHASES = [
+    { key: "p1", cell: "解", name: "Phase 1 · Coding patterns", res: [
+      ["NeetCode 150", "https://neetcode.io/practice"],
+      ["LeetCode 2672", "https://leetcode.com/problems/number-of-adjacent-elements-with-the-same-color/"],
+      ["LeetCode 125", "https://leetcode.com/problems/valid-palindrome/"],
+      ["LeetCode 5", "https://leetcode.com/problems/longest-palindromic-substring/"]
+    ], weeks: [
+      [1, "Hash maps, prefix sums, two pointers", "LC 1, 49, 128, 560, 125, 15, 3, and 2672 (reported). 25-minute timer on each."],
+      [2, "Stack, sliding window, binary search", "LC 20, 1047, 394, 739, 76, 424, 33, 34, 875. Saturday: first timed set.", "gate", "Gate 1: 4 problems (2 easy, 2 medium) in 70 min, every test passing on at least 3."]
+    ]},
+    { key: "p2", cell: "並", name: "Phase 2 · Java, concurrency & distributed computing", res: [
+      ["Baeldung", "https://www.baeldung.com/"],
+      ["Kotlin for Java devs", "https://kotlinlang.org/docs/comparison-to-java.html"],
+      ["LeetCode 347", "https://leetcode.com/problems/top-k-frequent-elements/"],
+      ["LeetCode 215", "https://leetcode.com/problems/kth-largest-element-in-an-array/"]
+    ], weeks: [
+      [3, "GC, JVM memory, HashMap & ConcurrentHashMap, locks", "Question bank: Java items 1–5. Coding: heaps and top-K: LC 347, 692, 215, 23, 973."],
+      [4, "Thread pools, virtual threads, Spring @Transactional, distributed locks", "Write the bounded queue from memory. Distributed locks and fencing tokens, DDIA ch. 8. Read one Kotlin file. Coding: trees: Sum Tree, LC 98, 236, 124, 102.", "gate", "Gate 2: recorded 2-min answers on GC, race vs data race, deadlock and fencing tokens; bounded queue from memory in 15 min."]
+    ]},
+    { key: "p3", cell: "基", name: "Phase 3 · Backend fundamentals", res: [
+      ["High Performance Browser Networking", "https://hpbn.co/"],
+      ["Linux performance", "https://www.brendangregg.com/linuxperf.html"],
+      ["OWASP Top 10", "https://owasp.org/Top10/"],
+      ["DynamoDB best practices", "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html"],
+      ["LeetCode 1584", "https://leetcode.com/problems/min-cost-to-connect-all-points/"],
+      ["LeetCode 2508", "https://leetcode.com/problems/add-edges-to-make-degrees-of-all-nodes-even/"]
+    ], weeks: [
+      [5, "Networking, Linux, containers, DB transactions, locking & schema design", "URL walkthrough, high-CPU debugging, ACID, isolation levels, account/ledger schema. Coding: graphs: LC 200, 207, 684, 1584, 2508. APPLY TO PAYMENTS THIS WEEK."],
+      [6, "Indexes, DynamoDB, Redis, Kafka, outbox, resilience, tuning, security, AWS", "DDIA ch. 2, 5, 7, 9. OWASP Top 10. Coding: DP: LC 70, 198, 322, 300, 1143. Saturday: second timed set.", "gate", "Gate 3: 15 of 20 random Java/Backend prompts without notes, a 4-problem set with a hard, and the ledger schema in MySQL and DynamoDB."]
+    ]},
+    { key: "p4", cell: "設", name: "Phase 4 · Payments & core banking design", res: [
+      ["Stripe on idempotency", "https://stripe.com/blog/idempotency"],
+      ["Google SRE book", "https://sre.google/sre-book/table-of-contents/"],
+      ["Strangler Fig", "https://martinfowler.com/bliki/StranglerFigApplication.html"],
+      ["System Design Primer", "https://github.com/donnemartin/system-design-primer"]
+    ], weeks: [
+      [7, "Design PayPay and a core bank: wallet, bank top-up, Zengin transfer, legacy migration", "Three timed 45-min designs out loud: the wallet, core banking transfers + interest batch, legacy core migration. Write one postmortem. SRE book ch. 6 and 15.", "gate", "Gate 4: a recorded 45-min design covering idempotency, state machine, ledger, bank timeouts with reconciliation, a justified middleware choice, and your alerts."]
+    ]},
+    { key: "p5", cell: "面", name: "Phase 5 · Mock loop", res: [
+      ["Exponent peer mocks", "https://www.tryexponent.com/"],
+      ["PayPay Inside-Out", "https://insideout.paypay.ne.jp/en/"],
+      ["PayPay 5 senses", "https://www.paypay-card.co.jp/recruit/en/work-style/5-senses/"]
+    ], weeks: [
+      [8, "Mock loop, stories, AI workflow demo", "One mock of each round type. Eight STAR stories matched to the 5 senses. A 5-minute AI-assisted change walkthrough. A 30-second Japanese self-introduction. Redo every failed problem cold.", "gate", "Ready: every question-bank box ticked, \"multiple pay clicks\" in 5 minutes, and a real AI-assisted change you can show."]
+    ]}
+  ];
+
+  var KEY = "paypay-plan-v1";
+  var state = { weeks: {}, qs: {} };
+  var storageOK = true;
+
+  try {
+    var raw = window.localStorage.getItem(KEY);
+    if (raw) {
+      var parsed = JSON.parse(raw) || {};
+      state.weeks = parsed.weeks || {};
+      state.qs = parsed.qs || {};
+    }
+  } catch (e) { storageOK = false; }
+
+  function save() {
+    if (!storageOK) { return; }
+    try { window.localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch (e) { storageOK = false; }
+  }
+
+  function count(obj) {
+    var n = 0;
+    for (var k in obj) { if (obj[k]) { n += 1; } }
+    return n;
+  }
+
+  /* ---------- week tracker ---------- */
+
+  var host = document.getElementById("weeks");
+  var total = 0;
+
+  PHASES.forEach(function (phase) {
+    var label = document.createElement("div");
+    label.className = "track-label";
+    var h = document.createElement("h3");
+    h.textContent = phase.cell + "  " + phase.name;
+    var span = document.createElement("span");
+    var first = phase.weeks[0][0];
+    var last = phase.weeks[phase.weeks.length - 1][0];
+    span.textContent = first === last ? "week " + first : "weeks " + first + "–" + last;
+    label.appendChild(h);
+    label.appendChild(span);
+    host.appendChild(label);
+
+    if (phase.res && phase.res.length) {
+      var resRow = document.createElement("div");
+      resRow.className = "res-row";
+      phase.res.forEach(function (r) {
+        var a = document.createElement("a");
+        a.className = "res-link";
+        a.href = r[1];
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.textContent = r[0];
+        resRow.appendChild(a);
+      });
+      host.appendChild(resRow);
+    }
+
+    phase.weeks.forEach(function (w) {
+      total += 1;
+      var id = "w" + w[0];
+      var isGate = w[3] === "gate";
+      var row = document.createElement("div");
+      row.className = "wk" + (isGate ? " is-gate" : "");
+
+      var box = document.createElement("input");
+      box.type = "checkbox";
+      box.id = id;
+      box.checked = !!state.weeks[id];
+
+      var num = document.createElement("div");
+      num.className = "wk-n";
+      num.textContent = "WK 0" + w[0];
+
+      var lab = document.createElement("label");
+      lab.setAttribute("for", id);
+      var task = document.createElement("span");
+      task.className = "wk-task";
+      task.textContent = w[1];
+      lab.appendChild(task);
+      var sub = document.createElement("span");
+      sub.className = "wk-sub";
+      sub.textContent = w[2];
+      lab.appendChild(sub);
+
+      if (isGate) {
+        var gateLine = document.createElement("span");
+        gateLine.className = "wk-sub wk-gate";
+        gateLine.textContent = w[4];
+        lab.appendChild(gateLine);
+      }
+
+      row.appendChild(box);
+      row.appendChild(num);
+      row.appendChild(lab);
+      host.appendChild(row);
+
+      if (box.checked) { row.classList.add("is-done"); }
+
+      box.addEventListener("change", function () {
+        state.weeks[id] = box.checked;
+        row.classList.toggle("is-done", box.checked);
+        save();
+        render();
+      });
+    });
+  });
+
+  /* ---------- question bank ---------- */
+
+  var qboxes = Array.prototype.slice.call(document.querySelectorAll('#bank .q input[type="checkbox"]'));
+
+  qboxes.forEach(function (box) {
+    var row = box.parentNode;
+    box.checked = !!state.qs[box.id];
+    box.setAttribute("aria-label", "Ready: " + row.querySelector(".qt").textContent);
+    row.classList.toggle("is-done", box.checked);
+    box.addEventListener("change", function () {
+      state.qs[box.id] = box.checked;
+      row.classList.toggle("is-done", box.checked);
+      save();
+      render();
+    });
+  });
+
+  var details = document.querySelectorAll("#bank details");
+  document.getElementById("hideAll").addEventListener("click", function () {
+    for (var i = 0; i < details.length; i += 1) { details[i].open = false; }
+  });
+  document.getElementById("showAll").addEventListener("click", function () {
+    for (var i = 0; i < details.length; i += 1) { details[i].open = true; }
+  });
+
+  /* ---------- render ---------- */
+
+  var pctEl = document.getElementById("pct");
+  var countEl = document.getElementById("count");
+  var fillEl = document.getElementById("fill");
+  var qpctEl = document.getElementById("qpct");
+  var qcountEl = document.getElementById("qcount");
+
+  function qDone() {
+    return qboxes.filter(function (b) { return b.checked; }).length;
+  }
+
+  function render() {
+    var n = count(state.weeks);
+    var pct = Math.round((n / total) * 100);
+    pctEl.textContent = pct + "%";
+    countEl.textContent = n + " / " + total + " weeks · " + (n * 10) + " hrs logged";
+    fillEl.style.width = pct + "%";
+
+    var qn = qDone();
+    qpctEl.textContent = Math.round((qn / qboxes.length) * 100) + "%";
+    qcountEl.textContent = qn + " / " + qboxes.length + " questions ready";
+
+    var groups = document.querySelectorAll("#bank .qgroup");
+    for (var i = 0; i < groups.length; i += 1) {
+      var bs = groups[i].querySelectorAll('input[type="checkbox"]');
+      var d = 0;
+      for (var j = 0; j < bs.length; j += 1) { if (bs[j].checked) { d += 1; } }
+      groups[i].querySelector(".qg-count").textContent = d + " / " + bs.length + " ready";
+    }
+  }
+
+  render();
+
+  /* ---------- toast, export, reset ---------- */
+
+  var toastEl = document.getElementById("toast");
+  var toastTimer = null;
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    if (toastTimer) { window.clearTimeout(toastTimer); }
+    toastTimer = window.setTimeout(function () { toastEl.classList.remove("show"); }, 2400);
+  }
+
+  if (!storageOK) { toast("Progress will not save on this device"); }
+
+  function buildMarkdown() {
+    var n = count(state.weeks);
+    var lines = [
+      "# PayPay Backend Interview — 8-Week Progress", "",
+      n + " / " + total + " weeks complete (" + Math.round((n / total) * 100) + "%)",
+      qDone() + " / " + qboxes.length + " questions ready", ""
+    ];
+    PHASES.forEach(function (phase) {
+      lines.push("## " + phase.cell + " " + phase.name);
+      lines.push("");
+      phase.weeks.forEach(function (w) {
+        var mark = state.weeks["w" + w[0]] ? "x" : " ";
+        lines.push("- [" + mark + "] **Week " + w[0] + "** — " + w[1]);
+        lines.push("  - " + w[2]);
+        if (w[3] === "gate") { lines.push("  - 🔒 **" + w[4] + "**"); }
+      });
+      lines.push("");
+      if (phase.res && phase.res.length) {
+        lines.push("**Materials:** " + phase.res.map(function (r) {
+          return "[" + r[0] + "](" + r[1] + ")";
+        }).join(" · "));
+        lines.push("");
+      }
+    });
+    lines.push("---", "", "## Question bank", "");
+    var groups = document.querySelectorAll("#bank .qgroup");
+    for (var i = 0; i < groups.length; i += 1) {
+      lines.push("### " + groups[i].getAttribute("data-group"));
+      lines.push("");
+      var bs = groups[i].querySelectorAll('input[type="checkbox"]');
+      for (var j = 0; j < bs.length; j += 1) {
+        var q = bs[j].parentNode.querySelector(".qt").textContent;
+        var tag = bs[j].parentNode.querySelector(".tag").textContent;
+        lines.push("- [" + (bs[j].checked ? "x" : " ") + "] " + q + (tag === "reported" ? " *(reported)*" : ""));
+      }
+      lines.push("");
+    }
+    return lines.join("\n");
+  }
+
+  document.getElementById("export").addEventListener("click", function () {
+    var md = buildMarkdown();
+    var name = "paypay-progress.md";
+    var framed = window.top !== window.self;
+
+    if (!framed) {
+      try {
+        var url = URL.createObjectURL(new Blob([md], { type: "text/markdown" }));
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+        toast("Saved " + name);
+        return;
+      } catch (e) { /* fall through to clipboard */ }
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(md).then(
+        function () { toast("Copied as Markdown"); },
+        function () { toast("Could not export here"); }
+      );
+    } else {
+      toast("Could not export here");
+    }
+  });
+
+  document.getElementById("reset").addEventListener("click", function () {
+    if (!window.confirm("Clear all ticked weeks and questions? This cannot be undone.")) { return; }
+    state = { weeks: {}, qs: {} };
+    save();
+    var boxes = document.querySelectorAll('.wk input[type="checkbox"], #bank .q input[type="checkbox"]');
+    for (var i = 0; i < boxes.length; i += 1) {
+      boxes[i].checked = false;
+      boxes[i].parentNode.classList.remove("is-done");
+    }
+    render();
+    toast("Progress cleared");
+  });
+})();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () {});
+  });
+}
+</script>
+</body>
+</html>
